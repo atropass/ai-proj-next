@@ -1,15 +1,15 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function NavBar() {
     const [scrollPosition, setScrollPosition] = useState(0);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
-    let element;
+    const faqRef = useRef(null);
     useEffect(() => {
         window.addEventListener('scroll', handleScroll, { passive: true });
-        let element = document.getElementById('faq');
+        faqRef.current = document.getElementById('faq');
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
@@ -18,7 +18,12 @@ export default function NavBar() {
     const handleScroll = () => {
         setScrollPosition(window.scrollY);
     };
-
+    const handleFaqClick = (event) => {
+        event.preventDefault();
+        if (faqRef.current) {
+            faqRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
 
     return (
         <header
@@ -43,7 +48,7 @@ export default function NavBar() {
 
                 <nav className="flex space-x-4">
                     <div className="flex justify-center space-x-4 mr-4">
-                        <Link href="/" passHref>
+                        <Link href="/main" passHref>
                             <button className={`${scrollPosition > 50 ? "text-black hover:bg-[#EE8365] hover:text-white" : "text-white hover:bg-black hover:text-white"} transition-colors duration-200 py-1 px-2 rounded`}>
                                 Домой
                             </button>
@@ -55,13 +60,13 @@ export default function NavBar() {
                             </button>
                         </Link>
 
-                        <Link href="/profile" passHref>
+                        <Link href="/main" passHref>
                             <button className={`${scrollPosition > 50 ? "text-black hover:bg-[#EE8365] hover:text-white" : "text-white hover:bg-black hover:text-white"} transition-colors duration-200 py-1 px-2 rounded`}>
                                 Мой профиль
                             </button>
                         </Link>
 
-                        <Link href="" onClick={() => element.scrollIntoView({ behavior: 'smooth' })} passHref>
+                        <Link href="/faq" onClick={handleFaqClick} passHref>
                             <button className={`${scrollPosition > 50 ? "text-black hover:bg-[#EE8365] hover:text-white" : "text-white hover:bg-black hover:text-white"} transition-colors duration-200 py-1 px-2 rounded`}>
                                 FAQs
                             </button>
