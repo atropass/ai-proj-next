@@ -50,7 +50,7 @@ export default function NavBar() {
                     <div className="flex justify-center space-x-4 mr-4">
                         <Link href="/main" passHref>
                             <button className={`${scrollPosition > 50 ? "text-black hover:bg-[#EE8365] hover:text-white" : "text-white hover:bg-black hover:text-white"} transition-colors duration-200 py-1 px-2 rounded`}>
-                                Домой
+                                Генератор
                             </button>
                         </Link>
 
@@ -60,7 +60,7 @@ export default function NavBar() {
                             </button>
                         </Link>
 
-                        <Link href="/main" passHref>
+                        <Link href="/" passHref>
                             <button className={`${scrollPosition > 50 ? "text-black hover:bg-[#EE8365] hover:text-white" : "text-white hover:bg-black hover:text-white"} transition-colors duration-200 py-1 px-2 rounded`}>
                                 Мой профиль
                             </button>

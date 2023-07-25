@@ -38,21 +38,6 @@ const BotInterface = ({ classData }) => {
     const [loading, setLoading] = useState(false);
     const [selectedTasks, setSelectedTasks] = useState({});
 
-    const [favoriteTasks, setFavoriteTasks] = useState([]);
-
-    const addToFavorites = async (task) => {
-        try {
-            const res = await axios.post('/api/favorites', { taskId: task.id });
-            if (res.status === 200) {
-                setFavoriteTasks(prevTasks => [...prevTasks, task]);
-            }
-        } catch (error) {
-            console.error("Error adding task to favorites:", error);
-        }
-    };
-
-
-
     const handleTaskSelect = async (topicIndex, taskIndex) => {
         let newSelectedTasks = { ...selectedTasks };
 
@@ -273,7 +258,6 @@ const BotInterface = ({ classData }) => {
                                             checked={selectedTasks[index]?.has(taskIndex) ?? false}
                                             onChange={() => handleTaskSelect(index, taskIndex)}
                                         />
-                                        <button onClick={() => addToFavorites(task)}>Добавить в избранное</button>
                                         <p className="text-dark-brown">{parseLaTeX(task)}</p>
                                     </li>
                                 ))}
