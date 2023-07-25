@@ -5,7 +5,9 @@ import storage from '../../../public/storage.json';
 import { Document, Page, PDFDownloadLink, Text, View } from '@react-pdf/renderer';
 import { InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
+import Select from "react-select";
 import { motion } from 'framer-motion';
+
 
 const translationMapping = {
     "math": "Математика",
@@ -157,110 +159,114 @@ const BotInterface = ({ classData }) => {
 
     return (
         <div className="h-screen pt-14 flex bg-gray-100 text-gray-800">
-
-            <motion.div className="w-1/3 h-full p-8 sticky top-0 overflow-auto bg-blue-900 text-white shadow-2xl">
+            <div className="w-1/3 h-full p-8 sticky top-0 overflow-auto bg-[#1D2432] text-[#C3C3C3] shadow-2xl">
                 <h1 className="text-2xl font-bold mb-4">Выбор предмета:</h1>
-                {Object.keys(classData).map((subject) => (
-                    <motion.button
-                        key={subject}
-                        onClick={() => changeSubject(subject)}
-                        className="w-full py-2 mt-4 font-semibold rounded-lg shadow-md hover:bg-blue-800 text-white bg-blue-500"
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        {translationMapping[subject] || subject}
-                    </motion.button>
-                ))}
+
+                <Select
+                    onChange={(e) => e && changeSubject(e.value)}
+                    className="w-full mt-4"
+                    placeholder="Выберите предмет"
+                    options={Object.keys(classData).map((subject) => ({
+                        value: subject,
+                        label: translationMapping[subject] || subject,
+                    }))}
+                    isClearable
+                    isSearchable
+                />
+
                 {selectedSubject && (
                     <div className="mt-4">
                         <h2 className="text-2xl font-bold mb-4">Выбор класса:</h2>
-                        {Object.keys(classData[selectedSubject] || {}).map((classNumber) => (
-                            <motion.button
-                                key={classNumber}
-                                onClick={() => changeClass(classNumber)}
-                                className="w-full py-2 mt-4 font-semibold rounded-lg shadow-md hover:bg-blue-800 text-white bg-blue-500"
-                                disabled={!selectedSubject}
-                                whileHover={{ scale: 1.1 }}
-                                transition={{ duration: 0.3 }}
-                            >
-                                {classNumber}
-                            </motion.button>
-                        ))}
+                        <Select
+                            onChange={(e) => e && changeClass(e.value)}
+                            className="w-full mt-4"
+                            placeholder="Выберите класс"
+                            options={Object.keys(classData[selectedSubject] || {}).map((classNumber) => ({
+                                value: classNumber,
+                                label: classNumber,
+                            }))}
+                            isDisabled={!selectedSubject}
+                            isClearable
+                            isSearchable
+                        />
                     </div>
                 )}
 
                 {selectedClass && (
                     <div className="mt-4">
                         <h2 className="text-2xl font-bold mb-4">Выбор четверти:</h2>
-                        {Object.keys(classData[selectedSubject]?.[selectedClass] || {}).map((quarter) => (
-                            <motion.button
-                                key={quarter}
-                                onClick={() => changeQuarter(quarter)}
-                                className="w-full py-2 mt-4 font-semibold rounded-lg shadow-md hover:bg-dark-primary text-white bg-light-primary"
-                                disabled={!selectedClass}
-                                whileHover={{ scale: 1.1 }}
-                                transition={{ duration: 0.3 }}
-                            >
-                                {quarter}
-                            </motion.button>
-                        ))}
+                        <Select
+                            onChange={(e) => e && changeQuarter(e.value)}
+                            className="w-full mt-4"
+                            placeholder="Выберите четверть"
+                            options={Object.keys(classData[selectedSubject]?.[selectedClass] || {}).map((quarter) => ({
+                                value: quarter,
+                                label: quarter,
+                            }))}
+                            isDisabled={!selectedClass}
+                            isClearable
+                            isSearchable
+                        />
                     </div>
                 )}
-
                 {selectedQuarter && (
                     <div className="mt-4">
                         <h2 className="text-2xl font-bold mb-4">Выбор темы:</h2>
-                        {classData[selectedSubject][selectedClass][selectedQuarter].map((topic) => (
-                            <label key={topic} className="block mt-4">
-                                <input
-                                    type="checkbox"
-                                    className="mr-2 text-primary align-middle form-checkbox text-blue-500 h-5 w-5"
-                                    value={topic}
-                                    onChange={(e) => {
-                                        if (e.target.checked) {
-                                            setSelectedTopics([...selectedTopics, e.target.value]);
-                                        } else {
-                                            setSelectedTopics(selectedTopics.filter((item) => item !== e.target.value));
-                                        }
-                                    }}
-                                />
-                                <span className="align-middle">{topic}</span>
-                            </label>
-                        ))}
+                        <details>
+                            <summary>Выберите темы</summary>
+                            {classData[selectedSubject][selectedClass][selectedQuarter].map((topic) => (
+                                <label key={topic} className="block mt-4">
+                                    <input
+                                        type="checkbox"
+                                        className="mr-2 text-primary align-middle"
+                                        value={topic}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setSelectedTopics([...selectedTopics, e.target.value]);
+                                            } else {
+                                                setSelectedTopics(selectedTopics.filter((item) => item !== e.target.value));
+                                            }
+                                        }}
+                                    />
+                                    <span className="align-middle">{topic}</span>
+                                </label>
+                            ))}
+                        </details>
                     </div>
                 )}
 
-                <div className="mt-6">
+                <div className="mt-6 flex justify-between space-x-4">
                     <motion.button
                         onClick={handleGenerate}
                         disabled={loading || selectedTopics.length === 0}
-                        className="w-full py-2 mt-4 font-semibold rounded-lg shadow-md hover:bg-dark-primary text-white bg-light-primary"
+                        className="w-full py-2 font-semibold rounded-lg shadow-md text-white bg-green-500 hover:bg-green-700"
                         whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.2 }}
                     >
                         {loading ? 'Создание...' : 'Создать'}
                     </motion.button>
                     <motion.button
                         onClick={handleAppend}
                         disabled={loading || selectedTopics.length === 0 || generatedTasks.length === 0}
-                        className="w-full py-2 mt-4 font-semibold rounded-lg shadow-md hover:bg-dark-primary text-white bg-light-primary"
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.3 }}
+                        className="w-full py-2 mt-4 font-semibold rounded-lg shadow-md text-[#1D2432] bg-[#C3C3C3]"
+                        whileHover={{ scale: 1.09 }}
+                        transition={{ duration: 0.2 }}
                     >
                         {loading ? 'Добавление...' : 'Добавить'}
                     </motion.button>
                     <motion.button
                         onClick={handleReset}
-                        className="w-full py-2 mt-4 font-semibold rounded-lg shadow-md hover:bg-dark-primary text-white bg-light-primary"
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.3 }}
+                        className="w-full py-2 mt-4 font-semibold rounded-lg shadow-md text-white bg-gray-500 hover:bg-gray-700"
+                        whileHover={{ scale: 1.09 }}
+                        transition={{ duration: 0.2 }}
                     >
                         Главное меню
                     </motion.button>
                 </div>
-            </motion.div>
+            </div>
+
             {generatedTasks && generatedTasks.length > 0 && (
-                <motion.div className="w-2/3 h-full p-8 overflow-auto bg-gray-200" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+                <div className="w-1/2 h-full p-8 overflow-auto bg-gray-200">
                     <div className="bg-white p-8 rounded shadow-lg">
                         <h2 className="text-2xl font-bold mb-4">Сгенерированные задачи:</h2>
                         {generatedTasks.map((topicData, index) => (
@@ -273,7 +279,7 @@ const BotInterface = ({ classData }) => {
                                                 type="checkbox"
                                                 checked={selectedTasks[index]?.has(taskIndex) ?? false}
                                                 onChange={() => handleTaskSelect(index, taskIndex)}
-                                                className="mr-2 text-primary align-middle form-checkbox text-blue-500 h-5 w-5"
+                                                className="mr-2 text-primary align-middle"
                                             />
                                             <p className="pl-6 align-middle">{parseLaTeX(task)}</p>
                                         </li>
@@ -289,12 +295,14 @@ const BotInterface = ({ classData }) => {
                             {({ blob, url, loading, error }) => (loading ? 'Загрузка документа...' : 'Скачать PDF')}
                         </PDFDownloadLink>
                     </div>
-                </motion.div>
+                </div>
             )}
         </div>
-    );
 
+    );
 };
+
+
 
 
 export default BotInterface;
