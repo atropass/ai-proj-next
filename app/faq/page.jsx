@@ -1,47 +1,60 @@
 "use client"
-export default function FaqPage() {
-    const faqList = [
-        {
-            question: "Как создать новую задачу?",
-            answer: "Чтобы создать новую задачу, нажмите на кнопку 'Создать новую задачу' на главной странице и следуйте инструкциям.",
-        },
-        {
-            question: "Можно ли редактировать уже созданные задачи?",
-            answer: "Да, можно редактировать уже созданные задачи. Для этого перейдите на страницу задачи и нажмите на кнопку 'Редактировать'.",
-        },
-        {
-            question: "Как удалить задачу?",
-            answer: "Чтобы удалить задачу, перейдите на страницу этой задачи и нажмите на кнопку 'Удалить'. Подтвердите своё действие в появившемся окне.",
-        },
-        {
-            question: "Как добавить задачу в избранное?",
-            answer: "Чтобы добавить задачу в избранное, перейдите на страницу задачи и нажмите на звёздочку рядом с названием задачи.",
-        },
-        // Добавьте больше вопросов сюда
-    ];
+import { useState } from 'react';
+import { Transition } from '@headlessui/react';
+
+const FAQs = [
+    { question: "Что такое создатель онлайн-тестов?", answer: "Создатель онлайн-тестов - это мощный инструмент, который позволяет вам создавать и управлять онлайн-тестами. Этот инструмент обычно имеет множество функций, таких как вопросы различных типов, таймеры, шкалы оценок и многое другое." },
+    { question: "Для чего используется создатель тестов?", answer: "Создатели тестов используются во многих областях, таких как образование, тренинги, HR и маркетинг. Они позволяют создавать кастомизированные тесты для различных целей, от оценки знаний студентов до проведения опросов среди клиентов." },
+    { question: "Кто может использовать создателя тестов?", answer: "Практически любой может использовать создателя тестов, от учителей и преподавателей до тренеров и специалистов по HR. Этот инструмент особенно полезен для людей, которым нужно быстро и эффективно оценить знания или навыки группы людей." },
+    { question: "Какие преимущества использования онлайн-создателя тестов?", answer: "Онлайн-создатели тестов облегчают создание, распространение и оценку тестов." },
+    { question: "Как создаются тесты с помощью создателя тестов?", answer: "Вы выбираете тип вопроса, вводите вопрос и возможные ответы, а затем указываете правильный ответ." },
+    { question: "Можно ли установить временные ограничения для прохождения теста?", answer: "Да, можно установить временное ограничение для всего теста или для отдельных вопросов." },
+    { question: "Можно ли случайным образом изменять порядок вопросов в тесте?", answer: "Да, многие создатели тестов позволяют случайно менять порядок вопросов." },
+    { question: "Можно ли создавать вопросы с выбором ответа, верно/неверно или коротким ответом?", answer: "Да, большинство создателей тестов поддерживают различные типы вопросов." },
+    { question: "Можно ли добавить изображения или видео к вопросам моего теста?", answer: "Да, многие создатели тестов позволяют добавлять мультимедиа к вопросам." },
+    { question: "Можно ли настроить тест так, чтобы студенты могли сохранять и продолжать свой прогресс позже?", answer: "Да, некоторые создатели тестов предлагают такую функцию." },
+];
+
+export default function FAQ() {
+    const [activeQuestion, setActiveQuestion] = useState(null);
+
+    const handleQuestionClick = (index) => {
+        if (activeQuestion === index) {
+            setActiveQuestion(null);
+        } else {
+            setActiveQuestion(index);
+        }
+    }
 
     return (
-        <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-            <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-                <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-                    <h2 className="text-2xl font-bold mb-6">Часто задаваемые вопросы</h2>
-                    {faqList.map((faq, index) => (
-                        <details key={index} className="mb-4">
-                            <summary className="font-semibold bg-gray-200 rounded-md py-2 px-4">
-                                {faq.question}
-                            </summary>
-                            <span className="px-4 py-2">{faq.answer}</span>
-                        </details>
-                    ))}
-                    <button
-                        onClick={() => window.history.back()}
-                        className="mt-5 py-2 px-4 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white transition-all duration-200 ease-in-out"
-                    >
-                        Назад
-                    </button>
-                </div>
+        <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-10" id='faq'>
+            <h1 className="text-4xl font-bold text-gray-800 mb-10">Узнайте больше про нашего бота</h1>
+            <div className="w-1/2">
+                {FAQs.map((faq, index) => (
+                    <div key={index} className="mb-4">
+                        <div
+                            onClick={() => handleQuestionClick(index)}
+                            className="w-full border-b border-gray-800 flex justify-between items-center cursor-pointer p-4 transition-colors duration-200 text-xl"
+                        >
+                            <p className="font-bold text-gray-900">{faq.question}</p>
+                            <span className="text-2xl">{activeQuestion === index ? '-' : '+'}</span>
+                        </div>
+                        <Transition
+                            show={activeQuestion === index}
+                            enter="transition-opacity duration-300"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="transition-opacity duration-300"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                        >
+                            <div className="mt-2 pl-4 text-lg">
+                                <p className="text-gray-700">{faq.answer}</p>
+                            </div>
+                        </Transition>
+                    </div>
+                ))}
             </div>
         </div>
-    );
+    )
 }

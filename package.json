@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.15",
     "@react-pdf/renderer": "^3.1.12",
+    "animate.css": "^4.1.1",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "eslint": "8.45.0",
@@ -21,6 +23,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-katex": "^3.0.1",
+    "react-scroll": "^1.8.9",
     "tailwindcss": "3.3.3"
   }
 }

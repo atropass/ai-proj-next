@@ -1,0 +1,38 @@
+.main-container {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1D2432;
+    overflow: hidden;
+}
+
+.content-container {
+    text-align: center;
+    z-index: 1;
+    color: white;
+}
+
+.shape-1 {
+    position: absolute;
+    top: 35vh;
+    /* Adjust this value to move the shape away from the edge */
+    right: 15vw;
+    /* Adjust this value to move the shape away from the edge */
+}
+
+.shape-2 {
+    position: absolute;
+    bottom: 8vh;
+    /* Adjusted this value to move the shape lower */
+    left: 19vw;
+    /* Adjust this value to move the shape away from the edge */
+}
+
+.shapes-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}

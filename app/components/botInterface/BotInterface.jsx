@@ -7,9 +7,6 @@ import { InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 
 
-
-const classData = storage;
-
 const MyDocument = ({ tasks }) => (
     <Document>
         <Page size="A4">
@@ -32,7 +29,7 @@ const parseLaTeX = (input) => {
     });
 };
 
-const BotInterface = () => {
+const BotInterface = ({ classData }) => {
     const [selectedSubject, setSelectedSubject] = useState('');
     const [selectedClass, setSelectedClass] = useState('');
     const [selectedQuarter, setSelectedQuarter] = useState('');
