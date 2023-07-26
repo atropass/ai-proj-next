@@ -224,7 +224,7 @@ const BotInterface = ({ classData }) => {
                                     setSelectedTopics(newValue);
                                 }}
                                 renderInput={(params) => (
-                                    <TextField {...params} variant="outlined" label="Темы" placeholder="Выберите или ищите темы"
+                                    <TextField {...params} placeholder="Выберите или ищите темы"
                                         sx={{
                                             width: '100%',
                                             '.MuiOutlinedInput-root': {
@@ -304,7 +304,7 @@ const BotInterface = ({ classData }) => {
                                                 onChange={() => handleTaskSelect(index, taskIndex)}
                                                 className="mr-2 text-primary align-middle"
                                             />
-                                            <p className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '24px' }}>{parseLaTeX(task)}</p>
+                                            <p className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>{parseLaTeX(task)}</p>
 
                                         </li>
 
