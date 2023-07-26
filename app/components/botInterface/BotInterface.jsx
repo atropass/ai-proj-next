@@ -1,12 +1,14 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import storage from '../../../public/storage.json';
 import { Document, Page, PDFDownloadLink, Text, View } from '@react-pdf/renderer';
 import { InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import Select from "react-select";
 import { motion } from 'framer-motion';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 
 const translationMapping = {
@@ -161,7 +163,6 @@ const BotInterface = ({ classData }) => {
         <div className="h-screen pt-14 flex bg-gray-100 text-gray-800">
             <div className="w-1/3 h-full p-8 sticky top-0 overflow-auto bg-[#1D2432] text-[#C3C3C3] shadow-2xl">
                 <h1 className="text-2xl font-bold mb-4">Выбор предмета:</h1>
-
                 <Select
                     onChange={(e) => e && changeSubject(e.value)}
                     className="w-full mt-4"
@@ -209,31 +210,53 @@ const BotInterface = ({ classData }) => {
                         />
                     </div>
                 )}
-                {selectedQuarter && (
-                    <div className="mt-4">
-                        <h2 className="text-2xl font-bold mb-4">Выбор темы:</h2>
-                        <details>
-                            <summary>Выберите темы</summary>
-                            {classData[selectedSubject][selectedClass][selectedQuarter].map((topic) => (
-                                <label key={topic} className="block mt-4">
-                                    <input
-                                        type="checkbox"
-                                        className="mr-2 text-primary align-middle"
-                                        value={topic}
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                setSelectedTopics([...selectedTopics, e.target.value]);
-                                            } else {
-                                                setSelectedTopics(selectedTopics.filter((item) => item !== e.target.value));
+                {
+                    selectedQuarter && (
+                        <div className="mt-4">
+                            <h2 className="text-2xl font-bold mb-4 text-[#C3C3C3]">Выбор темы:</h2>
+                            <Autocomplete
+                                multiple
+                                id="tags-outlined"
+                                options={classData[selectedSubject][selectedClass][selectedQuarter]}
+                                getOptionLabel={(option) => option}
+                                defaultValue={selectedTopics}
+                                onChange={(event, newValue) => {
+                                    setSelectedTopics(newValue);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField {...params} variant="outlined" label="Темы" placeholder="Выберите или ищите темы"
+                                        sx={{
+                                            width: '100%',
+                                            '.MuiOutlinedInput-root': {
+                                                backgroundColor: '#ffffff',
+                                                '& fieldset': {
+                                                    borderColor: 'rgba(195, 195, 195, 0.23)',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderColor: 'rgba(195, 195, 195, 0.87)',
+                                                },
+                                                '&.Mui-focused fieldset': {
+                                                    borderColor: 'rgba(195, 195, 195, 0.87)',
+                                                },
+                                            },
+                                            '.MuiFormLabel-root': {
+                                                color: 'rgba(195, 195, 195, 0.87)',
+                                            },
+                                            '.MuiAutocomplete-tag': {
+                                                backgroundColor: '#ffffff',
+                                                color: '#1D2432',
+                                                border: '1px solid #1D2432',
+                                                borderRadius: '5px',
+                                                padding: '2px',
                                             }
                                         }}
                                     />
-                                    <span className="align-middle">{topic}</span>
-                                </label>
-                            ))}
-                        </details>
-                    </div>
-                )}
+                                )}
+                            />
+                        </div>
+                    )
+                }
+
 
                 <div className="mt-6 flex justify-between space-x-4">
                     <motion.button
@@ -281,8 +304,10 @@ const BotInterface = ({ classData }) => {
                                                 onChange={() => handleTaskSelect(index, taskIndex)}
                                                 className="mr-2 text-primary align-middle"
                                             />
-                                            <p className="pl-6 align-middle">{parseLaTeX(task)}</p>
+                                            <p className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '24px' }}>{parseLaTeX(task)}</p>
+
                                         </li>
+
                                     ))}
                                 </ul>
                             </div>
@@ -298,11 +323,7 @@ const BotInterface = ({ classData }) => {
                 </div>
             )}
         </div>
-
     );
 };
-
-
-
 
 export default BotInterface;

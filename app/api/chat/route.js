@@ -16,9 +16,10 @@ export async function POST(req) {
             content: `You are an artificial intelligence designed to generate physics and math problems for students in grades 1 through 11.
       The subject is "${selectedSubject}", the class level is "${selectedClass}", the school year quarter is "${selectedQuarter}", and the topic in question is "${selectedTopic}". 
       Please generate a suitable task according to these criteria and if the task contains LaTeX format, don't forget to decipher LaTeX format. 
-      For each topic bring only 1 task, no more no less, do not make too long tasks and not too short. 
+      For each topic bring only 1 task, no more no less. When you generate an assignment or exam question don't forget to make a clear question about what you need to do in the assignment. 
       Don't write any task description or any comments on the task, generate the task without extra descriptive text or explanation. 
-      Remember you are created for generating tasks and no more! Genereate only in English!`
+      Remember you are created for generating tasks and no more! Genereate only in Russian language.In your answer, 
+      don't show any extra information other than the problem condition, that is, don't show the author, explanation, or any other information.`
         }
     ];
     const payload = {
