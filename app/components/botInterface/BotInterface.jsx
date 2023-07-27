@@ -2,13 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Document, Page, PDFDownloadLink, Text, View } from '@react-pdf/renderer';
-import { InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import Select from "react-select";
 import { motion } from 'framer-motion';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import MathJax from 'react-mathjax2'
+
+
 
 
 const translationMapping = {
@@ -32,11 +33,19 @@ const parseLaTeX = (input) => {
     const regex = /\$(.*?)\$/g;
     const parts = input.split(regex);
 
-    return parts.map((part, index) => {
-        if (index % 2 === 0) return part;
-        return <InlineMath key={index} math={part} />;
-    });
+    return (
+        <MathJax.Context input='tex'>
+            <>
+                {parts.map((part, index) => {
+                    if (index % 2 === 0) return part;
+                    return <MathJax.Node key={index} inline>{part}</MathJax.Node>;
+                })}
+            </>
+        </MathJax.Context>
+    );
 };
+
+
 
 const BotInterface = ({ classData }) => {
     const [selectedSubject, setSelectedSubject] = useState('');
@@ -67,7 +76,6 @@ const BotInterface = ({ classData }) => {
 
         setSelectedTasks(newSelectedTasks);
     };
-
 
     const handleDownload = () => {
         let tasksForDownload = [];
@@ -287,6 +295,7 @@ const BotInterface = ({ classData }) => {
                     </motion.button>
                 </div>
             </div>
+
 
             {generatedTasks && generatedTasks.length > 0 && (
                 <div className="w-1/2 h-full p-8 overflow-auto bg-gray-200">
