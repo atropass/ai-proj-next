@@ -1,7 +1,6 @@
 import { OpenAIStream } from '../../../lib/OpenAIStream'
 import { NextResponse } from 'next/server'
 
-// break the app if the API key is missing
 if (!process.env.OPENAI_API_KEY) {
     throw new Error('Missing Environment Variable OPENAI_API_KEY')
 }
@@ -18,7 +17,7 @@ export async function POST(req) {
       Please generate a suitable task according to these criteria and if the task contains LaTeX format, don't forget to decipher LaTeX format. 
       For each topic bring only 1 task, no more no less. When you generate an assignment or exam question don't forget to make a clear question about what you need to do in the assignment. 
       Don't write any task description or any comments on the task, generate the task without extra descriptive text or explanation. 
-      Remember you are created for generating tasks and no more! Genereate only in English language.In your answer, 
+      Remember you are created for generating tasks and no more! Generate only in Russian language.In your answer, 
       don't show any extra information other than the problem condition, that is, don't show the author, explanation, or any other information.`
         }
     ];

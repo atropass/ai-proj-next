@@ -1,5 +1,5 @@
 import BotInterface from "../components/botInterface/BotInterface";
-import NavBar from "app/components/home/navbar";
+import NavBar from "app/main/mainnav.jsx";
 
 async function getData() {
     const res = await fetch('https://fastapi-emvg.onrender.com/auth/json');
@@ -12,7 +12,7 @@ export default async function Home() {
     return (
         <>
             <NavBar />
-            <BotInterface classData={data}/>
+            <BotInterface classData={data} />
         </>
     );
 }
