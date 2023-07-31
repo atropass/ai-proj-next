@@ -8,6 +8,7 @@ export default function NavBar() {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
 
     useEffect(() => {
+
         window.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
