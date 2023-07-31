@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import CustomTextField from './CustomTextField';
-import html2pdf from 'html2pdf.js/dist/html2pdf.min';
+import html2pdf from 'html2pdf.js';
 import MathJax from 'react-mathjax2';
 
 const generateHtmlForPdf = (data) => {
