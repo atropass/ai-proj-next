@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import CustomTextField from './CustomTextField';
-import html2pdf from 'html2pdf.js';
+// import html2pdf from 'html2pdf.js';
 import MathJax from 'react-mathjax2';
 
 const generateHtmlForPdf = (data) => {
@@ -100,7 +100,7 @@ const BotInterface = ({ classData }) => {
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
         };
-        html2pdf().from(html).set(opt).save();
+        // html2pdf().from(html).set(opt).save();
     };
     const handleTaskSelect = async (topicIndex, taskIndex) => {
         let newSelectedTasks = { ...selectedTasks };
