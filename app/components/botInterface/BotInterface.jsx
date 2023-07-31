@@ -8,8 +8,17 @@ import TextField from '@mui/material/TextField';
 import CustomTextField from './CustomTextField';
 import html2pdf from 'html2pdf.js';
 import MathJax from 'react-mathjax2';
+import katex from 'katex';
 
 const generateHtmlForPdf = (data) => {
+    const tasksHtml = data.tasks.map((task, index) => {
+        const taskHtml = task.replace(/\$\s*(.*?)\s*\$/g, (match, latex) => {
+            const html = katex.renderToString(latex);
+            return html;
+        });
+        return `<p style="margin-bottom: 0.1in;">${index + 1}. ${taskHtml}</p>`;
+    }).join('');
+
     return `
     <div style="display: flex; justify-content: space-between; margin-top: 0.3in; margin-left: 0.45in; margin-right: 0.45in; font-size: 0.8em;">
         <div>Имя__________</div>
@@ -43,11 +52,12 @@ const generateHtmlForPdf = (data) => {
         </tr>
     </table>
     <div style="margin-left: 1in; margin-right: 1in;">
-        ${data.tasks.map((task, index) => `<p style="margin-bottom: 0.1in;">${index + 1}. ${task}</p>`).join('')}
+        ${tasksHtml}
         <div style="margin-bottom: 0.2in;"></div>
     </div>
     `;
 };
+
 
 const parseLaTeX = (input) => {
     const regex = /\$(.*?)\$/g;
