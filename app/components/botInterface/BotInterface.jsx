@@ -1,73 +1,50 @@
 "use client"
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Document, Page, PDFDownloadLink, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
-import 'katex/dist/katex.min.css';
 import Select from "react-select";
 import { motion } from 'framer-motion';
 import Autocomplete from '@mui/material/Autocomplete';
-import MathJax from 'react-mathjax2';
 import TextField from '@mui/material/TextField';
 import CustomTextField from './CustomTextField';
+import html2pdf from 'html2pdf.js';
+import MathJax from 'react-mathjax2';
 
-const styles = StyleSheet.create({
-    header: {
-        flexDirection: 'row',
-        marginBottom: 12,
-        fontSize: 12,
-        marginLeft: 12,
-        marginRight: 5,
-        marginTop: 12,
-    },
-    field: {
-        flex: 1,
-    },
-    rulesTitle: {
-        textAlign: 'center',
-        fontSize: 14,
-        fontWeight: 'bold',
-        marginBottom: 6,
-        fontSize: 20,
-        margin: 12,
-    },
-    rules: {
-        textAlign: 'center',
-        marginBottom: 12,
-        fontSize: 12,
-        margin: 12,
-    },
-});
-
-const MyDocument = ({ rules, topic, learningObjective, evaluationCriteria, thinkingSkillsLevel, completionTime, tasks }) => (
-    <Document>
-        <Page size="A4" style={styles.page}>
-            <View style={styles.header}>
-                <Text style={styles.field}>Name: _______________</Text>
-                <Text style={styles.field}>Second Name: _______________</Text>
-                <Text style={styles.field}>Class: _______________</Text>
-            </View>
-            <Text style={styles.sectionTitle}>Topic:</Text>
-            <Text style={styles.section}>{topic}</Text>
-            <Text style={styles.sectionTitle}>Learning goal:</Text>
-            <Text style={styles.section}>{learningObjective}</Text>
-            <Text style={styles.sectionTitle}>Criteria for evaluation:</Text>
-            <Text style={styles.section}>{evaluationCriteria}</Text>
-            <Text style={styles.sectionTitle}>Thinking Skill Level:</Text>
-            <Text style={styles.section}>{thinkingSkillsLevel}</Text>
-            <Text style={styles.sectionTitle}>Time to complete:</Text>
-            <Text style={styles.section}>{completionTime}</Text>
-            {tasks.map((task, index) => (
-                <Text key={index}>{task}</Text>
-            ))}
-        </Page>
-    </Document>
-);
-
-
-const translationMapping = {
-    "math": "Математика",
-    "phys": "Физика",
+const generateHtmlForPdf = (data) => {
+    return `
+    <div style="display: flex; justify-content: space-between; margin-top: 0.5in; margin-left: 1in; margin-right: 1in; font-size: 0.8em;">
+        <div>Имя________________</div>
+        <div>Фамилия________________</div>
+        <div>Класс_____</div>
+    </div>
+    <table style="width: 70%; margin: 0.5in auto; border: 1px solid black; text-align: left; font-size: 0.8em;">
+        <tr>
+            <th style="border: 1px solid black; padding-bottom: 0.1in;">Тема:</th>
+            <td style="border: 1px solid black; padding-bottom: 0.1in;">${data.topic}</td>
+        </tr>
+        <tr>
+            <th style="border: 1px solid black; padding-bottom: 0.1in;">Цель обучения:</th>
+            <td style="border: 1px solid black; padding-bottom: 0.1in;">${data.learningObjective}</td>
+        </tr>
+        <tr>
+            <th style="border: 1px solid black; padding-bottom: 0.1in;">Критерий оценивания:</th>
+            <td style="border: 1px solid black; padding-bottom: 0.1in;">${data.evaluationCriteria}</td>
+        </tr>
+        <tr>
+            <th style="border: 1px solid black; padding-bottom: 0.1in;">Уровень мыслительных навыков:</th>
+            <td style="border: 1px solid black; padding-bottom: 0.1in;">${data.thinkingSkillsLevel}</td>
+        </tr>
+        <tr>
+            <th style="border: 1px solid black; padding-bottom: 0.1in;">Время выполнения:</th>
+            <td style="border: 1px solid black; padding-bottom: 0.1in;">${data.completionTime}</td>
+        </tr>
+    </table>
+    <div style="margin-left: 1in; margin-right: 1in;">
+        ${data.tasks.map((task, index) => `<p style="margin-bottom: 0.1in;">${index + 1}. ${task}</p>`).join('')}
+        <div style="margin-bottom: 0.2in;"></div>
+    </div>
+    `;
 };
+
 
 
 const parseLaTeX = (input) => {
@@ -86,6 +63,11 @@ const parseLaTeX = (input) => {
     );
 };
 
+const translationMapping = {
+    "math": "Математика",
+    "phys": "Физика",
+};
+
 const BotInterface = ({ classData }) => {
     const [selectedSubject, setSelectedSubject] = useState('');
     const [selectedClass, setSelectedClass] = useState('');
@@ -99,7 +81,27 @@ const BotInterface = ({ classData }) => {
     const [evaluationCriteria, setEvaluationCriteria] = useState('');
     const [thinkingSkillsLevel, setThinkingSkillsLevel] = useState('');
     const [completionTime, setCompletionTime] = useState('');
-
+    const downloadPdf = () => {
+        const data = {
+            name: 'Name from form',  // Замените на данные из формы
+            secondName: 'Second name from form', // Замените на данные из формы
+            topic: topic,
+            learningObjective: learningObjective,
+            evaluationCriteria: evaluationCriteria,
+            thinkingSkillsLevel: thinkingSkillsLevel,
+            completionTime: completionTime,
+            tasks: handleDownload(), // Массив задач
+        };
+        const html = generateHtmlForPdf(data);
+        const opt = {
+            margin: 0,
+            filename: 'Задачи.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
+        };
+        html2pdf().from(html).set(opt).save();
+    };
     const handleTaskSelect = async (topicIndex, taskIndex) => {
         let newSelectedTasks = { ...selectedTasks };
 
@@ -178,8 +180,6 @@ const BotInterface = ({ classData }) => {
     >
         Скачать
     </button>
-
-
     const handleReset = () => {
         setSelectedSubject('');
         setSelectedClass('');
@@ -369,42 +369,34 @@ const BotInterface = ({ classData }) => {
                 <div className="flex-1 h-full p-8 overflow-auto bg-gray-200">
                     <div className="bg-white p-8 rounded shadow-lg">
                         <h2 className="text-2xl font-bold mb-4">Сгенерированные задачи:</h2>
-                        {generatedTasks.map((topicData, index) => (
-                            <div key={index}>
-                                <h3 className="text-xl font-bold mb-2">{topicData.topic}</h3>
-                                <ul>
-                                    {topicData.tasks.map((task, taskIndex) => (
-                                        <li key={taskIndex} className="mb-4 border-b border-gray-300">
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedTasks[index]?.has(taskIndex) ?? false}
-                                                onChange={() => handleTaskSelect(index, taskIndex)}
-                                                className="mr-2 text-primary align-middle"
-                                            />
-                                            <p className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>{parseLaTeX(task)}</p>
+                        <div id="pdfContent">
+                            {generatedTasks.map((topicData, index) => (
+                                <div key={index}>
+                                    <h3 className="text-xl font-bold mb-2">{topicData.topic}</h3>
+                                    <ul>
+                                        {topicData.tasks.map((task, taskIndex) => (
+                                            <li key={taskIndex} className="mb-4 border-b border-gray-300">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedTasks[index]?.has(taskIndex) ?? false}
+                                                    onChange={() => handleTaskSelect(index, taskIndex)}
+                                                    className="mr-2 text-primary align-middle"
+                                                />
+                                                <p className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>{parseLaTeX(task)}</p>
 
-                                        </li>
+                                            </li>
 
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
-                        <PDFDownloadLink
-                            document={
-                                <MyDocument
-                                    tasks={handleDownload()}
-                                    topic={topic}
-                                    learningObjective={learningObjective}
-                                    evaluationCriteria={evaluationCriteria}
-                                    thinkingSkillsLevel={thinkingSkillsLevel}
-                                    completionTime={completionTime}
-                                />
-                            }
-                            fileName="Задачи.pdf"
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
+                        <button
+                            onClick={downloadPdf}
                             className={`py-2 px-4 mt-4 font-semibold text-white rounded-lg shadow-md hover:bg-blue-700 ${learningObjective ? 'bg-blue-500' : 'bg-blue-300 cursor-not-allowed'}`}
                         >
-                            {({ blob, url, loading, error }) => (loading ? 'Загрузка документа...' : 'Скачать PDF')}
-                        </PDFDownloadLink>
+                            Download PDF
+                        </button>
                     </div>
                 </div>
             )}
