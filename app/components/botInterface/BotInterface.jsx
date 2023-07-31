@@ -87,8 +87,6 @@ const BotInterface = ({ classData }) => {
     const [completionTime, setCompletionTime] = useState('');
     const downloadPdf = () => {
         const data = {
-            name: 'Name from form',  // Замените на данные из формы
-            secondName: 'Second name from form', // Замените на данные из формы
             topic: topic,
             learningObjective: learningObjective,
             evaluationCriteria: evaluationCriteria,
