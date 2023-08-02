@@ -1,8 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
 
-
-
 const QuarterSelect = ({ classData, selectedSubject, selectedClass, selectedQuarter, setSelectedQuarter, changeQuarter }) => {
     const quarterOptions = Object.keys(classData[selectedSubject]?.[selectedClass] || {}).map((quarter) => ({
         value: quarter,
