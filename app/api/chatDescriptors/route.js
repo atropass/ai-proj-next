@@ -8,12 +8,15 @@ if (!process.env.OPENAI_API_KEY) {
 export const runtime = 'edge';
 
 export async function POST(req) {
-    const { generatedTasks } = await req.json();
 
-    const messages = generatedTasks.map((task) => {
+    const { task } = await req.json();
+
+    console.log('generatedTasks', task);
+
+    const messages = task.tasks.map((t) => {
         return {
             role: 'system',
-            content: `Хорошо подумай, не спеши и распиши мне полное решение задач с правильными ответами, если сомневаешься то напиши просто решение или ход решения, вот задача: ${task}`,
+            content: `Think well, take your time and write me the solution of the problem, do not make the solution too big, it should be small but with the correct answers, if in doubt then write just the solution or the course of the solution, here is the problem: ${t}`,
         };
     });
 

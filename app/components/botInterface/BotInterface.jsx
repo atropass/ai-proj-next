@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import CustomTextField from './CustomTextField';
@@ -26,12 +26,8 @@ const BotInterface = ({ classData }) => {
     const [thinkingSkillsLevel, setThinkingSkillsLevel] = useState('');
     const [completionTime, setCompletionTime] = useState('');
     const [customTitle, setCustomTitle] = useState('');
+    const [descriptors, setDescriptors] = useState(null);
 
-
-    const translationMapping = {
-        "math": "Математика",
-        "phys": "Физика",
-    };
 
     const parseLaTeX = (input) => {
         const regex = /\$(.*?)\$/g;
@@ -170,11 +166,29 @@ const BotInterface = ({ classData }) => {
                 allTasks.push({ topic, tasks: [response.data] });
             }
             setGeneratedTasks(allTasks);
+            //handleDescriptors();
         } catch (error) {
             console.error("Error fetching data from ChatGPT API:", error);
         }
         setLoading(false);
     };
+    const handleDescriptors = async () => {
+        const allDescriptors = [];
+        console.log({ "gtasks": generatedTasks });
+        for (let task of generatedTasks) {
+            console.log({ "task": task });
+            const response = await axios.post('/api/chatDescriptors', {
+                task,
+            });
+            allDescriptors.push({ task, descriptor: [response.data] });
+        }
+        setDescriptors(allDescriptors);
+        console.log(allDescriptors);
+    }
+
+    useEffect(() => {
+        handleDescriptors(generatedTasks);
+    }, [generatedTasks]);
 
     const handleAppend = async () => {
         setLoading(true);
@@ -332,12 +346,11 @@ const BotInterface = ({ classData }) => {
                 />
             </div>
             {
-                generatedTasks && generatedTasks.length > 0 && (
+                generatedTasks && generatedTasks.length > 0 && descriptors != null && (
                     <div className="flex-1 h-full p-8 overflow-auto bg-gray-200">
                         <div className="bg-white p-8 rounded shadow-lg">
                             <h2 className="text-2xl font-bold mb-4">Сгенерированные задачи:</h2>
                             <div id="pdfContent">
-                                {/* Displaying generated tasks */}
                                 <GeneratedTasks
                                     generatedTasks={generatedTasks}
                                     selectedTasks={selectedTasks}
@@ -352,6 +365,16 @@ const BotInterface = ({ classData }) => {
                             >
                                 Download PDF
                             </button>
+                            <div>
+                                <ol>
+                                    {descriptors.map((descriptor, index) => (
+
+                                        <li className='' key={index}>
+                                            <h3 className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>{index + 1}: {parseLaTeX(descriptor.descriptor[0])}</h3>
+                                        </li>
+                                    ))}
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 )
