@@ -56,14 +56,14 @@ const BotInterface = ({ classData }) => {
 
         return `
         <div style="text-align: center; font-size: 1.2em; font-weight: bold; margin-top: 0.5in;">${data.customTitle}</div>
-        <div style="display: flex; justify-content: space-between; margin-top: 0.3in; margin-left: 0.45in; margin-right: 0.45in; font-size: 0.8em;">
+        <div style="width: 80%; display: flex; justify-content: space-between; margin-top: 0.3in; margin-left: 0.80in; margin-right: 0.40in; font-size: 0.8em;">
             <div style="display: flex; flex-direction: column; align-items: flex-start;">
                 <div>Имя_____________</div>
                 <div>Фамилия_______________</div>
             </div>
             <div>Класс_____</div>
         </div>
-        <table style="width: 90%; margin: 0.1in auto; border: 1px solid #e0e0e0; text-align: left; font-size: 0.8em; border-collapse: collapse;">
+        <table style="width: 80%; margin: 0.4in auto; border: 1px solid #e0e0e0; text-align: left; font-size: 0.8em; border-collapse: collapse;">
             <colgroup>
                 <col style="width: 10%">
                 <col style="width: 90%">
