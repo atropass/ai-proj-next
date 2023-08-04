@@ -16,7 +16,7 @@ const ClassSelect = ({ classData, selectedSubject, selectedClass, setSelectedCla
             <Select
                 onChange={(e) => {
                     setSelectedClass(e.value);
-                    changeClass(e.value); // Call the changeClass function here
+                    changeClass(e.value);
                 }}
                 className="w-full mt-4 text-black"
                 placeholder="Выберите класс"
