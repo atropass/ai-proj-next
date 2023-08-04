@@ -29,10 +29,9 @@ export default function Landing() {
           <div className="mt-8">
             <Link
               href="/main"
-              className="px-6 py-3 text-lg font-medium bg-purple-500 rounded-md shadow-md
-              hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="generate-btn"
             >
-              Сгенерировать!
+              Создайте свой первый экзамен бесплатно!
             </Link>
           </div>
         </div>
