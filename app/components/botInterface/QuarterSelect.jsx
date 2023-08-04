@@ -12,8 +12,13 @@ const QuarterSelect = ({ classData, selectedSubject, selectedClass, selectedQuar
             <h2 className="text-2xl font-bold mb-4">Выбор четверти:</h2>
             <Select
                 onChange={(e) => {
-                    setSelectedQuarter(e.value);
-                    changeQuarter(e.value); // Call the changeQuarter function here
+                    if (e) {
+                        setSelectedQuarter(e.value);
+                        changeQuarter(e.value);
+                    } else {
+                        setSelectedQuarter(null);
+                        changeQuarter(null);
+                    }
                 }}
                 className="w-full mt-4 text-black"
                 placeholder="Выберите четверть"

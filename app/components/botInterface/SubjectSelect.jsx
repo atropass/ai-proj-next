@@ -18,8 +18,13 @@ const SubjectSelect = ({ classData, selectedSubject, setSelectedSubject, changeS
             <h1 className="text-2xl font-bold mb-4">Выбор предмета:</h1>
             <Select
                 onChange={(e) => {
-                    setSelectedSubject(e.value);
-                    changeSubject(e.value); // Call the changeSubject function here
+                    if (e) {
+                        setSelectedSubject(e.value);
+                        changeSubject(e.value);
+                    } else {
+                        setSelectedSubject(null);
+                        changeSubject(null);
+                    }
                 }}
                 className="w-full mt-4 text-black"
                 placeholder="Выберите предмет"

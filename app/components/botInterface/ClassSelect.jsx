@@ -15,8 +15,13 @@ const ClassSelect = ({ classData, selectedSubject, selectedClass, setSelectedCla
             <h2 className="text-2xl font-bold mb-4">Выбор класса:</h2>
             <Select
                 onChange={(e) => {
-                    setSelectedClass(e.value);
-                    changeClass(e.value);
+                    if (e) {
+                        setSelectedClass(e.value);
+                        changeClass(e.value);
+                    } else {
+                        setSelectedClass(null);
+                        changeClass(null);
+                    }
                 }}
                 className="w-full mt-4 text-black"
                 placeholder="Выберите класс"

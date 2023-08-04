@@ -298,30 +298,34 @@ const BotInterface = ({ classData }) => {
                         </div>
                     </MUI.Slide>
                 )}
-                <div className="mt-6 flex flex-col space-y-4">
-                    <button
-                        onClick={handleGenerate}
-                        disabled={loading || selectedTopics.length === 0}
-                        className="w-full py-2 font-semibold rounded-lg shadow-md text-white bg-[#0288D1]"
-                    >
-                        {loading ? 'Создание...' : 'Создать'}
-                    </button>
-                    <div className="flex justify-between">
-                        <button
-                            onClick={handleAppend}
-                            disabled={loading || selectedTopics.length === 0 || generatedTasks.length === 0}
-                            className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-[#00796B] mr-2"
-                        >
-                            {loading ? 'Добавление...' : 'Добавить'}
-                        </button>
-                        <button
-                            onClick={handleReset}
-                            className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-[#6A1B9A] ml-2"
-                        >
-                            Главное меню
-                        </button>
-                    </div>
-                </div>
+                {selectedTopics && selectedTopics.length > 0 && (
+                    <MUI.Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                        <div className="mt-6 flex flex-col space-y-4">
+                            <button
+                                onClick={handleGenerate}
+                                disabled={loading || selectedTopics.length === 0}
+                                className="w-full py-2 font-semibold rounded-lg shadow-md text-white bg-[#0288D1]"
+                            >
+                                {loading ? 'Создание...' : 'Создать'}
+                            </button>
+                            <div className="flex justify-between">
+                                <button
+                                    onClick={handleAppend}
+                                    disabled={loading || selectedTopics.length === 0 || generatedTasks.length === 0}
+                                    className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-[#00796B] mr-2"
+                                >
+                                    {loading ? 'Добавление...' : 'Добавить'}
+                                </button>
+                                <button
+                                    onClick={handleReset}
+                                    className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-[#6A1B9A] ml-2"
+                                >
+                                    Главное меню
+                                </button>
+                            </div>
+                        </div>
+                    </MUI.Slide>
+                )}
             </div>
             <div className="flex-1 h-full p-8 overflow-auto"
                 style={generatedTasks && generatedTasks.length > 0 ? {} : { backgroundColor: "#e5e5f7", opacity: "0.4", backgroundImage: "repeating-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff), repeating-linear-gradient(45deg, #ffffff 25%, #e5e5f7 25%, #e5e5f7 75%, #ffffff 75%, #ffffff)", backgroundPosition: "0 0, 9px 9px", backgroundSize: "18px 18px" }}>
