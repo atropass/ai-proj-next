@@ -243,7 +243,7 @@ const BotInterface = ({ classData }) => {
 
     return (
         <div className="h-screen pt-14 flex bg-[#E0F7FA]">
-            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#E0F7FA shadow-lg" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)', zIndex: 1 }}>
+            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#E0F7FA shadow-lg">
                 <MUI.Slide direction="right" in={true} mountOnEnter unmountOnExit>
                     <div>
                         <SubjectSelect
@@ -366,7 +366,7 @@ const BotInterface = ({ classData }) => {
                     )
                 }
             </div>
-            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#E0F7FA]" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)', zIndex: 1 }}>
+            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#E0F7FA]" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.08)', zIndex: 1 }}>
                 <CustomTextField
                     title="Тип проверки знаний"
                     placeholder="Введите тип проверки знаний, к примеру Суммативное оценивание"
