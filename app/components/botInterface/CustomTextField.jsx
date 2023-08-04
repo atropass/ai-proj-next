@@ -4,11 +4,11 @@ import TextField from '@mui/material/TextField';
 const CustomTextField = ({ title, placeholder, value, onChange }) => {
     return (
         <div className="mt-6">
-            <h2 className="text-2xl font-bold mb-4 text-[#C3C3C3]">{title}:</h2>
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">{title}:</h2>
             <TextField
                 placeholder={placeholder}
                 multiline
-                rows={4}
+                rows={2}
                 variant="outlined"
                 value={value}
                 onChange={onChange}

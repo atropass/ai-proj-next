@@ -7,7 +7,7 @@ const TopicSelect = ({ classData, selectedSubject, selectedClass, selectedQuarte
 
     return (
         <div className="mt-4">
-            <h2 className="text-2xl font-bold mb-4 text-[#C3C3C3]">Выбор темы:</h2>
+            <h2 className="text-2xl font-bold mb-4 text-[#020817]">Выбор темы:</h2>
             <Autocomplete
                 multiple
                 freeSolo

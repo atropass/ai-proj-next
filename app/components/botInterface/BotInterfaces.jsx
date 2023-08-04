@@ -12,6 +12,21 @@ import QuarterSelect from './QuarterSelect';
 import TopicSelect from './TopicSelect';
 import GeneratedTasks from './GeneratedTasks';
 import * as MUI from '@mui/material';
+import { Box, Button, TextField, Typography, Paper, styled } from '@mui/material';
+import { Scrollbar } from 'react-scrollbars-custom';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
+const CustomScrollbar = styled(Scrollbar)({
+    '& .ScrollbarsCustom-TrackY': {
+        backgroundColor: '#e0f7fa',
+        width: '8px',
+        right: '0',
+    },
+    '& .ScrollbarsCustom-ThumbY': {
+        backgroundColor: '#80deea',
+    },
+});
 
 const BotInterface = ({ classData }) => {
     const [selectedSubject, setSelectedSubject] = useState('');
@@ -161,7 +176,7 @@ const BotInterface = ({ classData }) => {
                     selectedSubject,
                     selectedClass,
                     selectedQuarter,
-                    selectedTopics: topic,
+                    selectedTopic: topic,
                 });
                 allTasks.push({ topic, tasks: [response.data] });
             }
@@ -177,16 +192,22 @@ const BotInterface = ({ classData }) => {
 
     const handleDescriptors = async () => {
         setDescriptorLoading(true);
-        const allDescriptors = [];
-        for (let task of generatedTasks) {
-            const response = await axios.post('/api/chatDescriptors', {
-                task,
-            });
-            allDescriptors.push({ task, descriptor: [response.data] });
+        try {
+            const allDescriptors = [];
+            for (let task of generatedTasks) {
+                const response = await axios.post('/api/chatDescriptors', {
+                    task,
+                });
+                allDescriptors.push({ task, descriptor: [response.data] });
+            }
+            setDescriptors(allDescriptors);
+        } catch (error) {
+            console.error("Error fetching descriptors from API:", error);
+            setDescriptors([]);
         }
-        setDescriptors(allDescriptors);
         setDescriptorLoading(false);
     };
+
 
     useEffect(() => {
         handleDescriptors(generatedTasks);
@@ -201,7 +222,7 @@ const BotInterface = ({ classData }) => {
                     selectedSubject,
                     selectedClass,
                     selectedQuarter,
-                    selectedTopics: topic,
+                    topic,
                 });
                 allTasks.push({ topic, tasks: [response.data] });
             }
@@ -242,8 +263,8 @@ const BotInterface = ({ classData }) => {
     };
 
     return (
-        <div className="h-screen pt-14 flex bg-[#E0F7FA]">
-            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#E0F7FA shadow-lg" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)', zIndex: 1 }}>
+        <div className="h-screen pt-14 flex bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white" >
+            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-gradient-to-r from-purple-300 via-purple-300 to-purple-400 bg-opacity-50 text-white">
                 <MUI.Slide direction="right" in={true} mountOnEnter unmountOnExit>
                     <div>
                         <SubjectSelect
@@ -298,35 +319,44 @@ const BotInterface = ({ classData }) => {
                         </div>
                     </MUI.Slide>
                 )}
+
                 <div className="mt-6 flex flex-col space-y-4">
-                    <button
+                    <motion.button
                         onClick={handleGenerate}
                         disabled={loading || selectedTopics.length === 0}
-                        className="w-full py-2 font-semibold rounded-lg shadow-md text-white bg-[#0288D1]"
+                        className="w-full py-2 font-semibold rounded-lg shadow-md text-white bg-green-500 hover:bg-green-700"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.2 }}
                     >
                         {loading ? 'Создание...' : 'Создать'}
-                    </button>
+                    </motion.button>
+
                     <div className="flex justify-between">
-                        <button
+                        <motion.button
                             onClick={handleAppend}
                             disabled={loading || selectedTopics.length === 0 || generatedTasks.length === 0}
-                            className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-[#00796B] mr-2"
+                            className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-green-500 hover:bg-green-700 mr-2"
+                            whileHover={{ scale: 1.09 }}
+                            transition={{ duration: 0.2 }}
                         >
                             {loading ? 'Добавление...' : 'Добавить'}
-                        </button>
-                        <button
+                        </motion.button>
+
+                        <motion.button
                             onClick={handleReset}
-                            className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-[#6A1B9A] ml-2"
+                            className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-gray-800 hover:bg-gray-600 ml-2"
+                            whileHover={{ scale: 1.09 }}
+                            transition={{ duration: 0.2 }}
                         >
                             Главное меню
-                        </button>
+                        </motion.button>
                     </div>
                 </div>
             </div>
             {
-                generatedTasks && generatedTasks.length > 0 && descriptors != null && (
-                    <div className="flex-1 h-full p-8 overflow-auto bg-white">
-                        <div className="p-8 rounded shadow-lg">
+                generatedTasks && generatedTasks.length > 0 && descriptors !== null ? (
+                    <div className="flex-1 h-full p-8 overflow-auto bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+                        <div className="bg-white p-8 rounded shadow-lg">
                             <h2 className="text-2xl font-bold mb-4">Сгенерированные задачи:</h2>
                             <div id="pdfContent">
                                 <GeneratedTasks
@@ -343,84 +373,87 @@ const BotInterface = ({ classData }) => {
                             >
                                 Download PDF
                             </button>
-                            {descriptorLoading ? (
-                                <div className="text-center mt-4">
-                                    <h2 className="text-lg font-bold">Дескрипторы генерируются...</h2>
-                                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500 m-auto"></div>
-                                </div>
-                            ) : (
+
+                            {descriptors.length > 0 ? (
                                 <div>
                                     <ol>
                                         {descriptors.map((descriptor, index) => (
                                             <li className='' key={index}>
-                                                <h3 className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>{index + 1 + " задание"}: {parseLaTeX(descriptor.descriptor[0])}</h3>
+                                                <h3 className="pl-6 align-middle text-black" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>
+                                                    {index + 1 + " задание"}: {parseLaTeX(descriptor.descriptor[0])}
+                                                </h3>
                                             </li>
                                         ))}
                                     </ol>
                                 </div>
+                            ) : (
+                                // Show the message if descriptors are empty
+                                <div className="text-black font-semibold mt-4">Дескрипторы пока не сгенерированы.</div>
                             )}
                         </div>
                     </div>
-                )}
-            <div className="w-1/4 h-full p-8 overflow-auto bg-[#E0F7FA]" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)', zIndex: 1 }}>
+                ) : (
+                    // Show the Generate button and PDF download button when descriptors are null
+                    <div className="flex-1 h-full p-8 overflow-auto bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+                        <div className="bg-white p-8 rounded shadow-lg">
+                            <h2 className="text-black text-2xl font-bold mb-4">Сгенерированные задачи:</h2>
+                            <div id="pdfContent">
+                                <GeneratedTasks
+                                    generatedTasks={generatedTasks}
+                                    selectedTasks={selectedTasks}
+                                    handleTaskSelect={handleTaskSelect}
+                                    parseLaTeX={parseLaTeX}
+                                />
+                            </div>
+                            <button
+                                onClick={downloadPdf}
+                                className={`py-2 px-4 mt-4 font-semibold text-white rounded-lg shadow-md hover:bg-blue-700 ${learningObjective ? 'bg-blue-500' : 'bg-blue-300 cursor-not-allowed'
+                                    }`}
+                            >
+                                Скачать PDF файл
+                            </button>
+                        </div>
+                    </div>
+                )
+            }
+            <div className="w-1/4 h-full p-8 overflow-auto from-purple-400 via-pink-500 to-red-500 text-white">
                 <CustomTextField
                     title="Тип проверки знаний"
                     placeholder="Введите тип проверки знаний, к примеру Суммативное оценивание"
                     value={customTitle}
                     onChange={handleCustomTitleChange}
                 />
-                <MUI.Slide direction="down" in={customTitle.length > 0}>
-                    <div>
-                        <CustomTextField
-                            title="Тема"
-                            placeholder="Введите тему"
-                            value={topic}
-                            onChange={(e) => setTopic(e.target.value)}
-                        />
-                    </div>
-                </MUI.Slide>
-                <MUI.Slide direction="down" in={topic.length > 0}>
-                    <div>
-                        <CustomTextField
-                            title="Цель обучения"
-                            placeholder="Введите цель обучения"
-                            value={learningObjective}
-                            onChange={(e) => setLearningObjective(e.target.value)}
-                        />
-                    </div>
-                </MUI.Slide>
-                <MUI.Slide direction="down" in={learningObjective.length > 0}>
-                    <div>
-                        <CustomTextField
-                            title="Критерий оценивания"
-                            placeholder="Введите критерий оценивания"
-                            value={evaluationCriteria}
-                            onChange={(e) => setEvaluationCriteria(e.target.value)}
-                        />
-                    </div>
-                </MUI.Slide>
-                <MUI.Slide direction="down" in={evaluationCriteria.length > 0}>
-                    <div>
-                        <CustomTextField
-                            title="Уровень мыслительных навыков"
-                            placeholder="Введите уровень мыслительных навыков"
-                            value={thinkingSkillsLevel}
-                            onChange={(e) => setThinkingSkillsLevel(e.target.value)}
-                        />
-                    </div>
-                </MUI.Slide>
-                <MUI.Slide direction="down" in={thinkingSkillsLevel.length > 0}>
-                    <div>
-                        <CustomTextField
-                            title="Время выполнения"
-                            placeholder="Введите время выполнения"
-                            value={completionTime}
-                            onChange={(e) => setCompletionTime(e.target.value)}
-                        />
-                    </div>
-                </MUI.Slide>
+                <CustomTextField
+                    title="Тема"
+                    placeholder="Введите тему"
+                    value={topic}
+                    onChange={(e) => setTopic(e.target.value)}
+                />
+                <CustomTextField
+                    title="Цель обучения"
+                    placeholder="Введите цель обучения"
+                    value={learningObjective}
+                    onChange={(e) => setLearningObjective(e.target.value)}
+                />
+                <CustomTextField
+                    title="Критерий оценивания"
+                    placeholder="Введите критерий оценивания"
+                    value={evaluationCriteria}
+                    onChange={(e) => setEvaluationCriteria(e.target.value)}
+                />
+                <CustomTextField
+                    title="Уровень мыслительных навыков"
+                    placeholder="Введите уровень мыслительных навыков"
+                    value={thinkingSkillsLevel}
+                    onChange={(e) => setThinkingSkillsLevel(e.target.value)}
+                />
+                <CustomTextField
+                    title="Время выполнения"
+                    placeholder="Введите время выполнения"
+                    value={completionTime}
+                    onChange={(e) => setCompletionTime(e.target.value)}
+                />
             </div>
-
         </div >
     );
 };

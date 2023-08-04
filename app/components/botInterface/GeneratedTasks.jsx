@@ -22,7 +22,7 @@ const GeneratedTasks = ({ generatedTasks, selectedTasks, handleTaskSelect, parse
         <div>
             {generatedTasks.map((topicData, index) => (
                 <div key={index}>
-                    <h3 className="text-xl font-bold mb-2">{topicData.topic}</h3>
+                    <h3 className="text-xl font-bold mb-2 text-black">{topicData.topic}</h3>
                     <ul>
                         {topicData.tasks.map((task, taskIndex) => (
                             <li key={taskIndex} className="mb-4 border-b border-gray-300">
@@ -32,7 +32,7 @@ const GeneratedTasks = ({ generatedTasks, selectedTasks, handleTaskSelect, parse
                                     onChange={() => handleTaskSelect(index, taskIndex)}
                                     className="mr-2 text-primary align-middle"
                                 />
-                                <p className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>
+                                <p className="pl-6 align-middle text-black" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>
                                     {parseLaTeX(task)}
                                 </p>
                             </li>

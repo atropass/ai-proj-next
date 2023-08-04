@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -23,7 +23,7 @@ export default function NavBar() {
         <header
             className={`
                 fixed top-0 w-full z-30 transition-all duration-500 ease-in-out 
-                ${scrollPosition > 50 ? "bg-[#FFFFFF] shadow-lg" : "bg-[#1D2432]"}
+                ${scrollPosition > 50 ? "bg-[#e0f7fa]" : "bg-[#e0f7fa]"}
             `}
         >
             <div className="flex justify-between mx-3 md:mx-5 h-16 max-w-screen-xl items-center xl:mx-auto">
@@ -36,7 +36,7 @@ export default function NavBar() {
                             height="50"
                             className="mr-2 rounded-sm"
                         />
-                        <p className={`font-extrabold ${scrollPosition > 50 ? "text-black" : "text-white"} transition-colors duration-300`}>ExamGenBOT</p>
+                        <p className={`font-extrabold ${scrollPosition > 50 ? "text-[#006064]" : "text-[#006064]"} transition-colors duration-300`}>ExamGenBOT</p>
                     </div>
                 </Link>
 
@@ -48,7 +48,7 @@ export default function NavBar() {
                             { name: 'Мой профиль', path: '/' },
                         ].map((item) => (
                             <Link href={item.path} passHref key={item.name}>
-                                <button className={`${scrollPosition > 50 ? "text-black hover:bg-[#EE8365] hover:text-white" : "text-white hover:bg-black hover:text-white"} transition-colors duration-300 py-2 px-4 rounded-lg font-semibold`}>
+                                <button className={`text-[#006064] hover:bg-[#b2ebf2] transition-colors duration-300 py-2 px-4 rounded-lg font-semibold`}>
                                     {item.name}
                                 </button>
                             </Link>
@@ -58,7 +58,7 @@ export default function NavBar() {
                     <div className="relative">
                         <button
                             onClick={() => setDropdownOpen(!isDropdownOpen)}
-                            className={`${scrollPosition > 50 ? "text-black" : "text-white"} transition-colors duration-300 py-2 px-3 rounded-lg bg-[#EE8365] hover:bg-transparent border border-[#EE8365] hover:border-transparent flex items-center font-semibold`}
+                            className={`text-[#006064] transition-colors duration-300 py-2 px-3 rounded-lg bg-[#b2ebf2] flex items-center font-semibold`}
                         >
                             Язык
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-4 w-4 ml-1">
@@ -66,9 +66,9 @@ export default function NavBar() {
                             </svg>
                         </button>
                         {isDropdownOpen && (
-                            <div className="absolute right-0 w-40 mt-2 py-2 bg-white border rounded-lg shadow-xl transition-all duration-500 ease-in-out">
+                            <div className="absolute right-0 w-40 mt-2 py-2 bg-[#e0f7fa] border rounded-lg shadow-xl transition-all duration-500 ease-in-out">
                                 {['Русский', 'English', 'Қазақша'].map((lang) => (
-                                    <button className="transition-colors duration-300 block px-4 py-2 cursor-pointer hover:bg-black hover:text-white w-full text-center text-black font-semibold" key={lang}>
+                                    <button className="transition-colors duration-300 block px-4 py-2 cursor-pointer hover:bg-[#b2ebf2] w-full text-center text-[#006064] font-semibold" key={lang}>
                                         {lang}
                                     </button>
                                 ))}
