@@ -7,9 +7,11 @@ export default function NavBar() {
     const [scrollPosition, setScrollPosition] = useState(0);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const faqRef = useRef(null);
+    const instrRef = useRef(null);
     useEffect(() => {
         window.addEventListener('scroll', handleScroll, { passive: true });
         faqRef.current = document.getElementById('faq');
+        instrRef.current = document.getElementById('instructions');
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
@@ -24,6 +26,13 @@ export default function NavBar() {
             faqRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }
+    const handleInstrClick = (event) => {
+        event.preventDefault();
+        if (instrRef.current) {
+            instrRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
 
     return (
         <header
@@ -50,9 +59,8 @@ export default function NavBar() {
                     <div className="flex justify-center space-x-6 mr-4">
                         {[
                             { name: 'Генератор', path: '/main' },
-                            { name: 'Избранное', path: '/favorites' },
-                            { name: 'Мой профиль', path: '/' },
-                            { name: 'FAQs', path: '/faq', onClick: handleFaqClick }
+                            { name: 'FAQs', path: '/faq', onClick: handleFaqClick },
+                            { name: 'Инструкция', path: '/instructions', onClick: handleInstrClick }
                         ].map((item) => (
                             <Link href={item.path} onClick={item.onClick} passHref key={item.name}>
                                 <button className={`${scrollPosition > 50 ? "text-black hover:bg-[#EE8365] hover:text-white" : "text-white hover:bg-black hover:text-white"} transition-colors duration-300 py-2 px-4 rounded-lg font-semibold`}>

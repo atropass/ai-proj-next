@@ -43,9 +43,7 @@ export default function NavBar() {
                 <nav className="flex space-x-4">
                     <div className="flex justify-center space-x-6 mr-4">
                         {[
-                            { name: 'Инструкция', path: '/instructions' },
-                            { name: 'Избранное', path: '/favorites' },
-                            { name: 'Мой профиль', path: '/' },
+                            { name: 'Инструкция', path: '/instructions' }
                         ].map((item) => (
                             <Link href={item.path} passHref key={item.name}>
                                 <button className={`text-[#006064] hover:bg-[#b2ebf2] transition-colors duration-300 py-2 px-4 rounded-lg font-semibold`}>
