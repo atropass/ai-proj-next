@@ -28,6 +28,7 @@ export default function FAQ() {
                     </AccordionItem>
                 ))}
             </Accordion>
+            <hr className="w-2/4 mt-20 mb-8 border-gray-400 border-t-2" />
         </div>
     );
 }
