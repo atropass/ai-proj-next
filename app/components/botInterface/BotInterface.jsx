@@ -323,46 +323,50 @@ const BotInterface = ({ classData }) => {
                     </div>
                 </div>
             </div>
-            {
-                generatedTasks && generatedTasks.length > 0 && descriptors != null && (
-                    <div className="flex-1 h-full p-8 overflow-auto bg-white">
-                        <div className="p-8 rounded shadow-lg">
-                            <h2 className="text-2xl font-bold mb-4">Сгенерированные задачи:</h2>
-                            <div id="pdfContent">
-                                <GeneratedTasks
-                                    generatedTasks={generatedTasks}
-                                    selectedTasks={selectedTasks}
-                                    handleTaskSelect={handleTaskSelect}
-                                    parseLaTeX={parseLaTeX}
-                                />
+            <div className="flex-1 h-full p-8 overflow-auto"
+                style={generatedTasks && generatedTasks.length > 0 ? {} : { backgroundColor: "#e5e5f7", opacity: "0.4", backgroundImage: "repeating-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff), repeating-linear-gradient(45deg, #ffffff 25%, #e5e5f7 25%, #e5e5f7 75%, #ffffff 75%, #ffffff)", backgroundPosition: "0 0, 9px 9px", backgroundSize: "18px 18px" }}>
+                {
+                    generatedTasks && generatedTasks.length > 0 && descriptors != null && (
+                        <div className="flex-1 h-full p-8 overflow-auto bg-white">
+                            <div className="p-8 rounded shadow-lg">
+                                <h2 className="text-2xl font-bold mb-4">Сгенерированные задачи:</h2>
+                                <div id="pdfContent">
+                                    <GeneratedTasks
+                                        generatedTasks={generatedTasks}
+                                        selectedTasks={selectedTasks}
+                                        handleTaskSelect={handleTaskSelect}
+                                        parseLaTeX={parseLaTeX}
+                                    />
+                                </div>
+                                <button
+                                    onClick={downloadPdf}
+                                    className={`py-2 px-4 mt-4 font-semibold text-white rounded-lg shadow-md hover:bg-blue-700 ${learningObjective ? 'bg-blue-500' : 'bg-blue-300 cursor-not-allowed'
+                                        }`}
+                                >
+                                    Download PDF
+                                </button>
+                                {descriptorLoading ? (
+                                    <div className="text-center mt-4">
+                                        <h2 className="text-lg font-bold">Дескрипторы генерируются...</h2>
+                                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500 m-auto"></div>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <ol>
+                                            {descriptors.map((descriptor, index) => (
+                                                <li className='' key={index}>
+                                                    <h3 className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>{index + 1 + " задание"}: {parseLaTeX(descriptor.descriptor[0])}</h3>
+                                                </li>
+                                            ))}
+                                        </ol>
+                                    </div>
+                                )}
                             </div>
-                            <button
-                                onClick={downloadPdf}
-                                className={`py-2 px-4 mt-4 font-semibold text-white rounded-lg shadow-md hover:bg-blue-700 ${learningObjective ? 'bg-blue-500' : 'bg-blue-300 cursor-not-allowed'
-                                    }`}
-                            >
-                                Download PDF
-                            </button>
-                            {descriptorLoading ? (
-                                <div className="text-center mt-4">
-                                    <h2 className="text-lg font-bold">Дескрипторы генерируются...</h2>
-                                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500 m-auto"></div>
-                                </div>
-                            ) : (
-                                <div>
-                                    <ol>
-                                        {descriptors.map((descriptor, index) => (
-                                            <li className='' key={index}>
-                                                <h3 className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>{index + 1 + " задание"}: {parseLaTeX(descriptor.descriptor[0])}</h3>
-                                            </li>
-                                        ))}
-                                    </ol>
-                                </div>
-                            )}
                         </div>
-                    </div>
-                )}
-            <div className="w-1/4 h-full p-8 overflow-auto bg-[#E0F7FA]" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)', zIndex: 1 }}>
+                    )
+                }
+            </div>
+            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#E0F7FA]" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)', zIndex: 1 }}>
                 <CustomTextField
                     title="Тип проверки знаний"
                     placeholder="Введите тип проверки знаний, к примеру Суммативное оценивание"
