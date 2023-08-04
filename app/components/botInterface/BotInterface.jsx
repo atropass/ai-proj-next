@@ -27,7 +27,7 @@ const BotInterface = ({ classData }) => {
     const [completionTime, setCompletionTime] = useState('');
     const [customTitle, setCustomTitle] = useState('');
     const [descriptors, setDescriptors] = useState(null);
-
+    const [descriptorLoading, setDescriptorLoading] = useState(false);
 
     const parseLaTeX = (input) => {
         const regex = /\$(.*?)\$/g;
@@ -143,7 +143,7 @@ const BotInterface = ({ classData }) => {
             if (selectedTasks[topicIndex]?.size > 0) {
                 for (const taskIndex of selectedTasks[topicIndex]) {
                     let task = generatedTasks[topicIndex].tasks[taskIndex];
-                    task = task.replace(/<\/?br\/?>/g, '\n'); // Replace HTML-tags with newline character
+                    task = task.replace(/<\/?br\/?>/g, '\n');
                     tasksForDownload.push(task);
                 }
             }
@@ -160,31 +160,32 @@ const BotInterface = ({ classData }) => {
                     selectedSubject,
                     selectedClass,
                     selectedQuarter,
-                    selectedTopic: topic,
+                    topic,
                 });
-                console.log(response.data);
                 allTasks.push({ topic, tasks: [response.data] });
             }
             setGeneratedTasks(allTasks);
-            //handleDescriptors();
+            if (allTasks.length > 0) {
+                handleDescriptors();
+            }
         } catch (error) {
             console.error("Error fetching data from ChatGPT API:", error);
         }
         setLoading(false);
     };
+
     const handleDescriptors = async () => {
+        setDescriptorLoading(true);
         const allDescriptors = [];
-        console.log({ "gtasks": generatedTasks });
         for (let task of generatedTasks) {
-            console.log({ "task": task });
             const response = await axios.post('/api/chatDescriptors', {
                 task,
             });
             allDescriptors.push({ task, descriptor: [response.data] });
         }
         setDescriptors(allDescriptors);
-        console.log(allDescriptors);
-    }
+        setDescriptorLoading(false);
+    };
 
     useEffect(() => {
         handleDescriptors(generatedTasks);
@@ -204,6 +205,9 @@ const BotInterface = ({ classData }) => {
                 allTasks.push({ topic, tasks: [response.data] });
             }
             setGeneratedTasks([...generatedTasks, ...allTasks]);
+            if (allTasks.length > 0) {
+                handleDescriptors();
+            }
         } catch (error) {
             console.error("Error fetching data from ChatGPT API:", error);
         }
@@ -238,7 +242,7 @@ const BotInterface = ({ classData }) => {
 
     return (
         <div className="h-screen pt-14 flex bg-gray-100 text-gray-800">
-            <div className="w-1/3 h-full p-8 sticky top-0 overflow-auto bg-[#1D2432] text-[#C3C3C3] shadow-2xl">
+            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#1D2432] text-[#C3C3C3] shadow-2xl" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.4)', zIndex: 1 }}>
                 <SubjectSelect
                     classData={classData}
                     selectedSubject={selectedSubject}
@@ -308,6 +312,48 @@ const BotInterface = ({ classData }) => {
                         </motion.button>
                     </div>
                 </div>
+            </div>
+            {
+                generatedTasks && generatedTasks.length > 0 && descriptors != null && (
+                    <div className="flex-1 h-full p-8 overflow-auto bg-gray-200" style={{ zIndex: 0 }}>
+                        <div className="bg-white p-8 rounded shadow-lg">
+                            <h2 className="text-2xl font-bold mb-4">Сгенерированные задачи:</h2>
+                            <div id="pdfContent">
+                                <GeneratedTasks
+                                    generatedTasks={generatedTasks}
+                                    selectedTasks={selectedTasks}
+                                    handleTaskSelect={handleTaskSelect}
+                                    parseLaTeX={parseLaTeX}
+                                />
+                            </div>
+                            <button
+                                onClick={downloadPdf}
+                                className={`py-2 px-4 mt-4 font-semibold text-white rounded-lg shadow-md hover:bg-blue-700 ${learningObjective ? 'bg-blue-500' : 'bg-blue-300 cursor-not-allowed'
+                                    }`}
+                            >
+                                Download PDF
+                            </button>
+                            <div>
+                                <ol>
+                                    {descriptors.map((descriptor, index) => (
+                                        <li className='' key={index}>
+                                            <h3 className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>{index + 1 + " задание"}: {parseLaTeX(descriptor.descriptor[0])}</h3>
+                                        </li>
+                                    ))}
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            {descriptorLoading && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white p-8 rounded shadow-lg">
+                        <h2 className="text-2xl font-bold mb-4">Генерация дескрипторов...</h2>
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+                    </div>
+                </div>
+            )}
+            <div className="w-1/4 h-full p-8 overflow-auto" style={{ backgroundColor: '#1D2432', boxShadow: '0 0 20px rgba(0, 0, 0, 0.4)', zIndex: 1 }}>
                 <CustomTextField
                     title="Тип проверки знаний"
                     placeholder="Введите тип проверки знаний, к примеру Суммативное оценивание"
@@ -345,40 +391,6 @@ const BotInterface = ({ classData }) => {
                     onChange={(e) => setCompletionTime(e.target.value)}
                 />
             </div>
-            {
-                generatedTasks && generatedTasks.length > 0 && descriptors != null && (
-                    <div className="flex-1 h-full p-8 overflow-auto bg-gray-200">
-                        <div className="bg-white p-8 rounded shadow-lg">
-                            <h2 className="text-2xl font-bold mb-4">Сгенерированные задачи:</h2>
-                            <div id="pdfContent">
-                                <GeneratedTasks
-                                    generatedTasks={generatedTasks}
-                                    selectedTasks={selectedTasks}
-                                    handleTaskSelect={handleTaskSelect}
-                                    parseLaTeX={parseLaTeX}
-                                />
-                            </div>
-                            <button
-                                onClick={downloadPdf}
-                                className={`py-2 px-4 mt-4 font-semibold text-white rounded-lg shadow-md hover:bg-blue-700 ${learningObjective ? 'bg-blue-500' : 'bg-blue-300 cursor-not-allowed'
-                                    }`}
-                            >
-                                Download PDF
-                            </button>
-                            <div>
-                                <ol>
-                                    {descriptors.map((descriptor, index) => (
-
-                                        <li className='' key={index}>
-                                            <h3 className="pl-6 align-middle" style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '20px' }}>{index + 1}: {parseLaTeX(descriptor.descriptor[0])}</h3>
-                                        </li>
-                                    ))}
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                )
-            }
         </div >
     );
 };

@@ -11,12 +11,14 @@ export async function POST(req) {
 
     const { task } = await req.json();
 
-    console.log('generatedTasks', task);
-
     const messages = task.tasks.map((t) => {
         return {
             role: 'system',
-            content: `Think well, take your time and write me the solution of the problem, do not make the solution too big, it should be small but with the correct answers, if in doubt then write just the solution or the course of the solution, here is the problem: ${t}`,
+            content: `I have a task: ${t}. Write step-by-step descriptors for the task for this task. Example descriptors "Performs the construction of the graph of a function;
+            Records the transformations used to construct the graph;". And so do this for the task I provided. 
+            Also after each step make a new line. Also for each step, write how many points to give. How many points you can decide yourself on the difficulty of the step. 
+            Don't write anything else but these steps. Don't write that you are an artificial intelligence, if you don't know what to do better print the word "Error". 
+            Generate descriptors in Russian!`,
         };
     });
 
