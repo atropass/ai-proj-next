@@ -7,8 +7,8 @@ export default function Footer() {
             <div className="container mx-auto px-6 py-[50px]">
                 <div className="grid grid-cols-3 md:grid-cols-5 gap-6">
                     <div className="col-span-3 md:col-span-2">
-                        <div className="mb-4">
-                            <Image src="/EXENGPT.png" alt="Footer Logo" width={150} height={50} />
+                        <div className="mb-2">
+                            <Image src="/logo1.png" alt="Footer Logo" width={150} height={150} className='rounded-full' />
                         </div>
                         <p className="mb-4">EmtihanGPT - это мощный генератор вопросов на основе искусственного интеллекта, разработанный для революционизации процесса создания тестов и экзаменов для учителей. Также он поможет создать практические вопросы для экзаменов SAT, GCSE, A-Level и AP.</p>
                     </div>

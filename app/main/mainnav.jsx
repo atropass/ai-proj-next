@@ -30,13 +30,13 @@ export default function NavBar() {
                 <Link href="/" passHref>
                     <div className="flex items-center font-display text-2xl cursor-pointer">
                         <Image
-                            src="/n17r.png"
+                            src="/logo1.png"
                             alt="N17R logo"
                             width="50"
                             height="50"
                             className="mr-2 rounded-sm"
                         />
-                        <p className={`font-extrabold ${scrollPosition > 50 ? "text-[#006064]" : "text-[#006064]"} transition-colors duration-300`}>EmtihanGPT</p>
+                        <p className={`font-extrabold ${scrollPosition > 50 ? "text-[#111110]" : "text-[#111110]"} transition-colors duration-300`}>EmtihanGPT</p>
                     </div>
                 </Link>
 
@@ -46,7 +46,7 @@ export default function NavBar() {
                             { name: 'Вернуться на главную страницу', path: '/' }
                         ].map((item) => (
                             <Link href={item.path} passHref key={item.name}>
-                                <button className={`text-[#006064] hover:bg-[#b2ebf2] transition-colors duration-300 py-2 px-4 rounded-lg font-semibold`}>
+                                <button className={`text-[#111111] hover:bg-[#b2ebf2] transition-colors duration-300 py-2 px-4 rounded-lg font-semibold`}>
                                     {item.name}
                                 </button>
                             </Link>
@@ -56,7 +56,7 @@ export default function NavBar() {
                     <div className="relative">
                         <button
                             onClick={() => setDropdownOpen(!isDropdownOpen)}
-                            className={`text-[#006064] transition-colors duration-300 py-2 px-3 rounded-lg bg-[#b2ebf2] flex items-center font-semibold`}
+                            className={`text-[#111110] transition-colors duration-300 py-2 px-3 rounded-lg bg-[#b2ebf2] flex items-center font-semibold`}
                         >
                             Язык
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-4 w-4 ml-1">

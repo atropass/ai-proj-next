@@ -45,11 +45,11 @@ export default function NavBar() {
                 <Link href="/" passHref>
                     <div className="flex items-center font-display text-2xl cursor-pointer">
                         <Image
-                            src="/n17r.png"
+                            src="/logo1.png"
                             alt="N17R logo"
                             width="50"
                             height="50"
-                            className="mr-2 rounded-sm"
+                            className="mr-2 rounded-full"
                         />
                         <p className={`font-extrabold ${scrollPosition > 50 ? "text-black" : "text-white"} transition-colors duration-300`}>EmtihanGPT</p>
                     </div>
