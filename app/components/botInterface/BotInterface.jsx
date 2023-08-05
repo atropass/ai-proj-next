@@ -370,65 +370,54 @@ const BotInterface = ({ classData }) => {
                     )
                 }
             </div>
-            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#E0F7FA]" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.08)', zIndex: 1 }}>
+            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#E0F7FA] scrollbar-hide" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.08)', zIndex: 1 }}>
                 <CustomTextField
                     title="Тип проверки знаний"
                     placeholder="Введите тип проверки знаний, к примеру Суммативное оценивание"
                     value={customTitle}
                     onChange={handleCustomTitleChange}
                 />
-                <MUI.Slide direction="down" in={customTitle.length > 0}>
-                    <div>
-                        <CustomTextField
-                            title="Тема"
-                            placeholder="Введите тему"
-                            value={topic}
-                            onChange={(e) => setTopic(e.target.value)}
-                        />
-                    </div>
-                </MUI.Slide>
-                <MUI.Slide direction="down" in={topic.length > 0}>
-                    <div>
-                        <CustomTextField
-                            title="Цель обучения"
-                            placeholder="Введите цель обучения"
-                            value={learningObjective}
-                            onChange={(e) => setLearningObjective(e.target.value)}
-                        />
-                    </div>
-                </MUI.Slide>
-                <MUI.Slide direction="down" in={learningObjective.length > 0}>
-                    <div>
-                        <CustomTextField
-                            title="Критерий оценивания"
-                            placeholder="Введите критерий оценивания"
-                            value={evaluationCriteria}
-                            onChange={(e) => setEvaluationCriteria(e.target.value)}
-                        />
-                    </div>
-                </MUI.Slide>
-                <MUI.Slide direction="down" in={evaluationCriteria.length > 0}>
-                    <div>
-                        <CustomTextField
-                            title="Уровень мыслительных навыков"
-                            placeholder="Введите уровень мыслительных навыков"
-                            value={thinkingSkillsLevel}
-                            onChange={(e) => setThinkingSkillsLevel(e.target.value)}
-                        />
-                    </div>
-                </MUI.Slide>
-                <MUI.Slide direction="down" in={thinkingSkillsLevel.length > 0}>
-                    <div>
-                        <CustomTextField
-                            title="Время выполнения"
-                            placeholder="Введите время выполнения"
-                            value={completionTime}
-                            onChange={(e) => setCompletionTime(e.target.value)}
-                        />
-                    </div>
-                </MUI.Slide>
+                <div className={`${customTitle.length > 0 ? 'block transition-all duration-300 ease-in-out' : 'hidden'}`}>
+                    <CustomTextField
+                        title="Тема"
+                        placeholder="Введите тему"
+                        value={topic}
+                        onChange={(e) => setTopic(e.target.value)}
+                    />
+                </div>
+                <div className={`${topic.length > 0 ? 'block transition-all duration-300 ease-in-out' : 'hidden'}`}>
+                    <CustomTextField
+                        title="Цель обучения"
+                        placeholder="Введите цель обучения"
+                        value={learningObjective}
+                        onChange={(e) => setLearningObjective(e.target.value)}
+                    />
+                </div>
+                <div className={`${learningObjective.length > 0 ? 'block transition-all duration-300 ease-in-out' : 'hidden'}`}>
+                    <CustomTextField
+                        title="Критерий оценивания"
+                        placeholder="Введите критерий оценивания"
+                        value={evaluationCriteria}
+                        onChange={(e) => setEvaluationCriteria(e.target.value)}
+                    />
+                </div>
+                <div className={`${evaluationCriteria.length > 0 ? 'block transition-all duration-300 ease-in-out' : 'hidden'}`}>
+                    <CustomTextField
+                        title="Уровень мыслительных навыков"
+                        placeholder="Введите уровень мыслительных навыков"
+                        value={thinkingSkillsLevel}
+                        onChange={(e) => setThinkingSkillsLevel(e.target.value)}
+                    />
+                </div>
+                <div className={`${thinkingSkillsLevel.length > 0 ? 'block transition-all duration-300 ease-in-out' : 'hidden'}`}>
+                    <CustomTextField
+                        title="Время выполнения"
+                        placeholder="Введите время выполнения"
+                        value={completionTime}
+                        onChange={(e) => setCompletionTime(e.target.value)}
+                    />
+                </div>
             </div>
-
         </div >
     );
 };

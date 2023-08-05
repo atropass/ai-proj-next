@@ -36,14 +36,14 @@ export default function NavBar() {
                             height="50"
                             className="mr-2 rounded-sm"
                         />
-                        <p className={`font-extrabold ${scrollPosition > 50 ? "text-[#006064]" : "text-[#006064]"} transition-colors duration-300`}>ExamGenBOT</p>
+                        <p className={`font-extrabold ${scrollPosition > 50 ? "text-[#006064]" : "text-[#006064]"} transition-colors duration-300`}>EmtihanGPT</p>
                     </div>
                 </Link>
 
                 <nav className="flex space-x-4">
                     <div className="flex justify-center space-x-6 mr-4">
                         {[
-                            { name: 'Инструкция', path: '/instructions' }
+                            { name: 'Вернуться на главную страницу', path: '/' }
                         ].map((item) => (
                             <Link href={item.path} passHref key={item.name}>
                                 <button className={`text-[#006064] hover:bg-[#b2ebf2] transition-colors duration-300 py-2 px-4 rounded-lg font-semibold`}>

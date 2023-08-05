@@ -10,7 +10,7 @@ export default function Footer() {
                         <div className="mb-4">
                             <Image src="/EXENGPT.png" alt="Footer Logo" width={150} height={50} />
                         </div>
-                        <p className="mb-4">ExamGenGPT - это мощный генератор вопросов на основе искусственного интеллекта, разработанный для революционизации процесса создания тестов и экзаменов для учителей. Также он поможет создать практические вопросы для экзаменов SAT, GCSE, A-Level и AP.</p>
+                        <p className="mb-4">EmtihanGPT - это мощный генератор вопросов на основе искусственного интеллекта, разработанный для революционизации процесса создания тестов и экзаменов для учителей. Также он поможет создать практические вопросы для экзаменов SAT, GCSE, A-Level и AP.</p>
                     </div>
 
                     <div className="col-span-3 md:col-span-1"></div>
@@ -33,7 +33,7 @@ export default function Footer() {
                 <div className="container mx-auto px-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                         <div>
-                            <span>&copy; 2023 ExamGenGPT. Все права защищены.</span>
+                            <span>&copy; 2023 EmtihanGPT. Все права защищены.</span>
                             <p> Created by Aibar Berekeyev</p>
                         </div>
                         <div className="text-right text-xl">
