@@ -1,21 +1,6 @@
 import React from 'react';
 import MathJax from 'react-mathjax2';
-
-const parseLaTeX = (input) => {
-    const regex = /\$(.*?)\$/g;
-    const parts = input.split(regex);
-
-    return (
-        <MathJax.Context input='tex'>
-            <>
-                {parts.map((part, index) => {
-                    if (index % 2 === 0) return part;
-                    return <MathJax.Node key={index} inline>{part}</MathJax.Node>;
-                })}
-            </>
-        </MathJax.Context>
-    );
-};
+import Latex from 'react-latex';
 
 const GeneratedTasks = ({ generatedTasks, selectedTasks, handleTaskSelect, parseLaTeX }) => {
     return (

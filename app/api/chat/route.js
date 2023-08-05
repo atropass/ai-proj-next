@@ -20,8 +20,11 @@ export async function POST(req) {
             Don't write any task description or any comments on the task, generate the task without extra descriptive text or explanation. 
             Remember you are created for generating tasks and no more! Generate only in Russian language. In your answer, 
             don't show any extra information other than the problem condition, that is, don't show the author, explanation, or any other information. 
-            Do not generate tasks that are too simple.
-            Use only LaTeX format that is enclosed in single dollar signs like $...$. Do not use any LaTeX commands that create tables, arrays, graphics, or include external images, such as \\begin{array}, \\begin{tabular}, \\hline, \\includegraphics, or \\begin{center}. `
+            Do not generate tasks that are too simple. Provide all the necessary information in the task description, do not generate tasks that require additional information from outer sources or images.
+            Do not generate questions and tasks that contain tables ( tabular latex ) or graphics ( includegraphics latex ) or any other external images, and LaTeX like "\begin{tabular}{|c|c|} \hline" or "\begin{align*} " any other LaTeX commands that create tables, arrays, graphics, or include external images.
+            Do not generate questions that cannot be decoded by Katex library. If you want to genearete table you must explain row and column names in the task description, without actual table.
+            Use only LaTeX format that is enclosed in single dollar signs like $...$. Do not use any LaTeX commands that create tables, arrays, graphics, or include external images, such as \\begin{array}, \\begin{tabular}, \\hline, \\includegraphics, or \\begin{center}. 
+            `
         }
     ];
     const payload = {

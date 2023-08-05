@@ -173,6 +173,7 @@ const BotInterface = ({ classData }) => {
             console.error("Error fetching data from ChatGPT API:", error);
         }
         setLoading(false);
+
     };
 
     const handleDescriptors = async () => {
@@ -242,8 +243,8 @@ const BotInterface = ({ classData }) => {
     };
 
     return (
-        <div className="h-screen pt-14 flex bg-[#E0F7FA]">
-            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#E0F7FA shadow-lg">
+        <div className="h-screen pt-14 flex bg-[#F1F4F9]">
+            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#F1F4F9]">
                 <MUI.Slide direction="right" in={true} mountOnEnter unmountOnExit>
                     <div>
                         <SubjectSelect
@@ -302,7 +303,9 @@ const BotInterface = ({ classData }) => {
                     <MUI.Slide direction="right" in={true} mountOnEnter unmountOnExit>
                         <div className="mt-6 flex flex-col space-y-4">
                             <button
-                                onClick={handleGenerate}
+                                onClick={() => {
+                                    handleGenerate();
+                                }}
                                 disabled={loading || selectedTopics.length === 0}
                                 className="w-full py-2 font-semibold rounded-lg shadow-md text-white bg-[#0288D1]"
                             >
@@ -328,7 +331,17 @@ const BotInterface = ({ classData }) => {
                 )}
             </div>
             <div className="flex-1 h-full p-8 overflow-auto"
-                style={generatedTasks && generatedTasks.length > 0 ? {} : { backgroundColor: "#e5e5f7", opacity: "0.4", backgroundImage: "linear-gradient(#3a3b4f 2.2px, transparent 2.2px), linear-gradient(90deg, #3a3b4f 2.2px, transparent 2.2px), linear-gradient(#3a3b4f 1.1px, transparent 1.1px), linear-gradient(90deg, #3a3b4f 1.1px, #e5e5f7 1.1px)", backgroundPosition: "55px 55px, 55px 55px, 11px 11px, 11px 11px", backgroundSize: "-2.2px -2.2px, -2.2px -2.2px, -1.1px -1.1px, -1.1px -1.1px" }}>
+                style={generatedTasks && generatedTasks.length > 0
+                    ? {}
+                    : {
+                        backgroundColor: "#ffffff",
+                        opacity: "0.5",
+                        backgroundImage: 'linear-gradient(#9090b9 0.8px, transparent 0.8px), linear-gradient(90deg, #9090b9 0.8px, transparent 0.8px), linear-gradient(#9090b9 0.4px, transparent 0.4px), linear-gradient(90deg, #9090b9 0.4px, #ffffff 0.4px)',
+                        backgroundSize: '20px 20px, 20px 20px, 4px 4px, 4px 4px',
+                        backgroundPosition: '-0.8px -0.8px, -0.8px -0.8px, -0.4px -0.4px, -0.4px -0.4px',
+                    }
+                }
+            >
                 {
                     generatedTasks && generatedTasks.length > 0 && descriptors != null && (
                         <div className="flex-1 h-full p-8 overflow-auto bg-white">
@@ -370,53 +383,63 @@ const BotInterface = ({ classData }) => {
                     )
                 }
             </div>
-            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#E0F7FA] scrollbar-hide" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.08)', zIndex: 1 }}>
+            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#F1F4F9]">
                 <CustomTextField
                     title="Тип проверки знаний"
                     placeholder="Введите тип проверки знаний, к примеру Суммативное оценивание"
                     value={customTitle}
                     onChange={handleCustomTitleChange}
                 />
-                <div className={`${customTitle.length > 0 ? 'block transition-all duration-300 ease-in-out' : 'hidden'}`}>
-                    <CustomTextField
-                        title="Тема"
-                        placeholder="Введите тему"
-                        value={topic}
-                        onChange={(e) => setTopic(e.target.value)}
-                    />
-                </div>
-                <div className={`${topic.length > 0 ? 'block transition-all duration-300 ease-in-out' : 'hidden'}`}>
-                    <CustomTextField
-                        title="Цель обучения"
-                        placeholder="Введите цель обучения"
-                        value={learningObjective}
-                        onChange={(e) => setLearningObjective(e.target.value)}
-                    />
-                </div>
-                <div className={`${learningObjective.length > 0 ? 'block transition-all duration-300 ease-in-out' : 'hidden'}`}>
-                    <CustomTextField
-                        title="Критерий оценивания"
-                        placeholder="Введите критерий оценивания"
-                        value={evaluationCriteria}
-                        onChange={(e) => setEvaluationCriteria(e.target.value)}
-                    />
-                </div>
-                <div className={`${evaluationCriteria.length > 0 ? 'block transition-all duration-300 ease-in-out' : 'hidden'}`}>
-                    <CustomTextField
-                        title="Уровень мыслительных навыков"
-                        placeholder="Введите уровень мыслительных навыков"
-                        value={thinkingSkillsLevel}
-                        onChange={(e) => setThinkingSkillsLevel(e.target.value)}
-                    />
-                </div>
-                <div className={`${thinkingSkillsLevel.length > 0 ? 'block transition-all duration-300 ease-in-out' : 'hidden'}`}>
-                    <CustomTextField
-                        title="Время выполнения"
-                        placeholder="Введите время выполнения"
-                        value={completionTime}
-                        onChange={(e) => setCompletionTime(e.target.value)}
-                    />
-                </div>
+                <MUI.Slide direction="down" in={customTitle.length > 0}>
+                    <div>
+                        <CustomTextField
+                            title="Тема"
+                            placeholder="Введите тему"
+                            value={topic}
+                            onChange={(e) => setTopic(e.target.value)}
+                        />
+                    </div>
+                </MUI.Slide>
+                <MUI.Slide direction="down" in={topic.length > 0}>
+                    <div>
+                        <CustomTextField
+                            title="Цель обучения"
+                            placeholder="Введите цель обучения"
+                            value={learningObjective}
+                            onChange={(e) => setLearningObjective(e.target.value)}
+                        />
+                    </div>
+                </MUI.Slide>
+                <MUI.Slide direction="down" in={learningObjective.length > 0}>
+                    <div>
+                        <CustomTextField
+                            title="Критерий оценивания"
+                            placeholder="Введите критерий оценивания"
+                            value={evaluationCriteria}
+                            onChange={(e) => setEvaluationCriteria(e.target.value)}
+                        />
+                    </div>
+                </MUI.Slide>
+                <MUI.Slide direction="down" in={evaluationCriteria.length > 0}>
+                    <div>
+                        <CustomTextField
+                            title="Уровень мыслительных навыков"
+                            placeholder="Введите уровень мыслительных навыков"
+                            value={thinkingSkillsLevel}
+                            onChange={(e) => setThinkingSkillsLevel(e.target.value)}
+                        />
+                    </div>
+                </MUI.Slide>
+                <MUI.Slide direction="down" in={thinkingSkillsLevel.length > 0}>
+                    <div>
+                        <CustomTextField
+                            title="Время выполнения"
+                            placeholder="Введите время выполнения"
+                            value={completionTime}
+                            onChange={(e) => setCompletionTime(e.target.value)}
+                        />
+                    </div>
+                </MUI.Slide>
             </div>
         </div >
     );

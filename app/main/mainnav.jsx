@@ -23,7 +23,7 @@ export default function NavBar() {
         <header
             className={`
                 fixed top-0 w-full z-30 transition-all duration-500 ease-in-out 
-                ${scrollPosition > 50 ? "bg-[#e0f7fa]" : "bg-[#e0f7fa]"}
+                ${scrollPosition > 50 ? "bg-[#F1F4F9]" : "bg-[#F1F4F9]"}
             `}
         >
             <div className="flex justify-between mx-3 md:mx-5 h-16 max-w-screen-xl items-center xl:mx-auto">
@@ -64,7 +64,7 @@ export default function NavBar() {
                             </svg>
                         </button>
                         {isDropdownOpen && (
-                            <div className="absolute right-0 w-40 mt-2 py-2 bg-[#e0f7fa] border rounded-lg shadow-xl transition-all duration-500 ease-in-out">
+                            <div className="absolute right-0 w-40 mt-2 py-2 bg-[#F1F4F9] border rounded-lg shadow-xl transition-all duration-500 ease-in-out">
                                 {['Русский', 'English', 'Қазақша'].map((lang) => (
                                     <button className="transition-colors duration-300 block px-4 py-2 cursor-pointer hover:bg-[#b2ebf2] w-full text-center text-[#006064] font-semibold" key={lang}>
                                         {lang}
