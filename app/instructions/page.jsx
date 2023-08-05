@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { ProgressBar, Step } from 'react-step-progress-bar';
+import styled, { keyframes } from 'styled-components';
 import 'react-step-progress-bar/styles.css';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
@@ -11,37 +10,88 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 50vh;
   padding: 0 10%;
+  background-color: #F3F4F6;
+  margin-top: -3.5rem;
+
+  @media (max-width: 768px) {
+    height: auto;
+    padding: 2rem 1rem;
+  }
 `;
+
+const Title = styled.h1`
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1.25rem;
+  margin-top: -2rem;
+  text-align: center;
+  position: relative;
+  bottom: 0rem;
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    bottom: 1rem;
+  }
+`;
+
 
 const StyledButton = styled(Button)`
   font-size: 1.2rem;
   margin: 10px;
-  background: #3f51b5;
+  background: linear-gradient(to bottom right, #3f51b5, #2196f3);
   color: white;
+  border-radius: 8px;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s;
   &:hover {
-    background: #002984;
+    background: linear-gradient(to bottom right, #002984, #0059b3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  &:after {
+    content: "";
+    background: rgba(255,255,255,0.2);
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px!important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+  }
+  &:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
   }
 `;
 
 const StepTitle = styled.h2`
-  font-size: 2rem;
+  font-size: 1.4rem;
   margin-bottom: 10px;
+  text-align: center;
 `;
 
 const StepContent = styled.p`
   font-size: 1.2rem;
   margin-bottom: 20px;
   transition: opacity 0.3s;
+  text-align: center;
 `;
+const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-const StepMarker = styled.div`
-  background-color: ${(props) => (props.accomplished ? '#3f51b5' : '#757de8')};
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin: 20px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Instructions = () => {
@@ -115,46 +165,38 @@ const Instructions = () => {
     };
 
     return (
-        <Container>
-            <ProgressBar
-                percent={(activeStep / (steps.length - 1)) * 100}
-                filledBackground="transparent"
-            >
-                {steps.map((step, index) => (
-                    <Step key={step.title} transition="scale">
-                        {({ accomplished }) => (
-                            <StepMarker accomplished={accomplished} />
-                        )}
-                    </Step>
-                ))}
-            </ProgressBar>
-            <div>
+        <>
+            <Title>Инструкция</Title>
+            <Container>
                 {steps.map((step, index) => (
                     <Collapse key={step.title} in={activeStep === index}>
                         <div>
                             <StepTitle>{step.title}</StepTitle>
                             <StepContent>{step.content}</StepContent>
-                            <StyledButton disabled={activeStep === 0} onClick={handlePrevStep}>
-                                Назад
-                            </StyledButton>
-                            <StyledButton variant="contained" color="primary" onClick={handleNextStep}>
-                                {activeStep === steps.length - 1 ? 'Завершить' : 'Далее'}
-                            </StyledButton>
+                            <ButtonsContainer>
+                                <StyledButton disabled={activeStep === 0} onClick={handlePrevStep}>
+                                    Назад
+                                </StyledButton>
+                                <StyledButton variant="contained" color="primary" onClick={handleNextStep}>
+                                    {activeStep === steps.length - 1 ? 'Завершить' : 'Далее'}
+                                </StyledButton>
+                            </ButtonsContainer>
                         </div>
                     </Collapse>
                 ))}
                 {activeStep === steps.length && (
                     <div>
                         <StepTitle>Инструкция завершена</StepTitle>
-                        <StyledButton variant="contained" color="primary" onClick={handleResetSteps}>
-                            Начать заново
-                        </StyledButton>
+                        <ButtonsContainer>
+                            <StyledButton variant="contained" color="primary" onClick={handleResetSteps}>
+                                Начать заново
+                            </StyledButton>
+                        </ButtonsContainer>
                     </div>
                 )}
-            </div>
-        </Container>
+            </Container>
+        </>
     );
 };
 
 export default Instructions;
-
