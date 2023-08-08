@@ -258,10 +258,10 @@ const BotInterface = ({ classData }) => {
     };
 
     return (
-        <div className="h-screen pt-14 flex bg-[#F1F4F9]">
-            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#F1F4F9]">
+        <div className="h-screen pt-14 flex bg-gray-100">
+            <div className="w-1/4 h-full p-6 bg-white shadow-md overflow-y-auto">
                 <MUI.Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                    <div>
+                    <div className="mb-4">
                         <SubjectSelect
                             classData={classData}
                             selectedSubject={selectedSubject}
@@ -273,7 +273,7 @@ const BotInterface = ({ classData }) => {
 
                 {selectedSubject && (
                     <MUI.Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                        <div>
+                        <div className="mb-4">
                             <ClassSelect
                                 classData={classData}
                                 selectedSubject={selectedSubject}
@@ -287,7 +287,7 @@ const BotInterface = ({ classData }) => {
 
                 {selectedClass && (
                     <MUI.Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                        <div>
+                        <div className="mb-4">
                             <QuarterSelect
                                 classData={classData}
                                 selectedSubject={selectedSubject}
@@ -302,7 +302,7 @@ const BotInterface = ({ classData }) => {
 
                 {selectedQuarter && (
                     <MUI.Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                        <div>
+                        <div className="mb-4">
                             <TopicSelect
                                 classData={classData}
                                 selectedSubject={selectedSubject}
@@ -314,29 +314,28 @@ const BotInterface = ({ classData }) => {
                         </div>
                     </MUI.Slide>
                 )}
+
                 {selectedTopics && selectedTopics.length > 0 && (
                     <MUI.Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                        <div className="mt-6 flex flex-col space-y-4">
+                        <div className="mt-6 space-y-4">
                             <button
-                                onClick={() => {
-                                    handleGenerate();
-                                }}
+                                onClick={handleGenerate}
                                 disabled={loading || selectedTopics.length === 0}
-                                className="w-full py-2 text-xl font-bold rounded-lg shadow-md text-white bg-[#0288D1]"
+                                className="w-full py-2 text-xl font-semibold rounded-lg shadow-lg text-white bg-blue-500 hover:bg-blue-600 transition duration-300"
                             >
                                 {loading ? 'Создание задач...' : 'Создать задания на выбранные темы'}
                             </button>
-                            <div className="flex justify-between">
+                            <div className="flex justify-between space-x-2">
                                 <button
                                     onClick={handleAppend}
                                     disabled={loading || selectedTopics.length === 0 || generatedTasks.length === 0}
-                                    className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-[#00796B] mr-2"
+                                    className="w-1/2 py-2 font-semibold rounded-lg shadow-lg text-white bg-green-500 hover:bg-green-600 transition duration-300"
                                 >
                                     {loading ? 'Добавление заданий...' : 'Добавить еще заданий'}
                                 </button>
                                 <button
                                     onClick={handleReset}
-                                    className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-[#6A1B9A] ml-2"
+                                    className="w-1/2 py-2 font-semibold rounded-lg shadow-lg text-white bg-purple-500 hover:bg-purple-600 transition duration-300"
                                 >
                                     Обновить
                                 </button>
@@ -345,6 +344,7 @@ const BotInterface = ({ classData }) => {
                     </MUI.Slide>
                 )}
             </div>
+
             <div className="flex-1 h-full p-8 overflow-auto"
                 style={generatedTasks && generatedTasks.length > 0
                     ? {}
@@ -358,9 +358,10 @@ const BotInterface = ({ classData }) => {
                 }
             >
                 {
+
                     generatedTasks && generatedTasks.length > 0 && descriptors != null && (
                         <div className="flex-1 h-full p-8 overflow-auto bg-white">
-                            <div className="p-8 rounded shadow-lg">
+                            <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
                                 <h2 className="text-2xl font-bold mb-4">Вот ваши задачи:</h2>
                                 <div id="pdfContent">
                                     <GeneratedTasks
@@ -372,7 +373,7 @@ const BotInterface = ({ classData }) => {
                                 </div>
                                 <button
                                     onClick={downloadPdf}
-                                    className={`py-2 px-4 mt-4 font-semibold text-white rounded-lg shadow-md hover:bg-blue-700 ${learningObjective ? 'bg-blue-500' : 'bg-blue-300 cursor-not-allowed'
+                                    className={`py-2 px-4 font-semibold text-white rounded-lg shadow-md hover:bg-blue-700 ${learningObjective ? 'bg-blue-500' : 'bg-blue-300 cursor-not-allowed'
                                         }`}
                                 >
                                     Download PDF
@@ -398,7 +399,7 @@ const BotInterface = ({ classData }) => {
                     )
                 }
             </div>
-            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#F1F4F9]" ref={containerRef}>
+            <div className="w-1/4 h-full p-6 bg-white shadow-md overflow-y-auto" ref={containerRef}>
                 {!isInfoVisible && (
                     <button
                         onClick={() => setInfoVisible(true)}
