@@ -8,6 +8,7 @@ const SubjectSelect = ({ classData, selectedSubject, setSelectedSubject, changeS
         "math": "Математика",
         "phys": "Физика",
         "chem": "Химия",
+        "bio": "Биология",
     };
     const subjectOptions = Object.keys(classData).map((subject) => ({
         value: subject,
