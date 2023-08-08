@@ -9,7 +9,7 @@ const QuarterSelect = ({ classData, selectedSubject, selectedClass, selectedQuar
 
     return (
         <div className="mt-4">
-            <h2 className="text-2xl font-bold mb-4">Выбор четверти:</h2>
+            <h2 className="text-2xl font-bold mb-4">Выберите четверть обучения:</h2>
             <Select
                 onChange={(e) => {
                     if (e) {

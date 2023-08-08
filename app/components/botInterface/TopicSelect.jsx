@@ -7,7 +7,7 @@ const TopicSelect = ({ classData, selectedSubject, selectedClass, selectedQuarte
 
     return (
         <div className="mt-4">
-            <h2 className="text-2xl font-bold mb-4 text-[#020817]">Выбор темы:</h2>
+            <h2 className="text-2xl font-bold mb-4 text-[#020817]">Выберите темы или цели обучения:</h2>
             <Autocomplete
                 multiple
                 freeSolo
@@ -21,7 +21,7 @@ const TopicSelect = ({ classData, selectedSubject, selectedClass, selectedQuarte
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        placeholder="Выберите или ищите темы"
+                        placeholder="Вы можете искать или вписать свою тему или цель"
                         sx={{
                             width: '100%',
                             '.MuiOutlinedInput-root': {

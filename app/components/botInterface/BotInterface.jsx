@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import CustomTextField from './CustomTextField';
@@ -29,6 +29,21 @@ const BotInterface = ({ classData }) => {
     const [customTitle, setCustomTitle] = useState('');
     const [descriptors, setDescriptors] = useState(null);
     const [descriptorLoading, setDescriptorLoading] = useState(false);
+    const [isInfoVisible, setInfoVisible] = useState(false);
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (containerRef.current && !containerRef.current.contains(event.target)) {
+                setInfoVisible(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const parseLaTeX = (input) => {
         const regex = /\$(.*?)\$/g;
@@ -307,9 +322,9 @@ const BotInterface = ({ classData }) => {
                                     handleGenerate();
                                 }}
                                 disabled={loading || selectedTopics.length === 0}
-                                className="w-full py-2 font-semibold rounded-lg shadow-md text-white bg-[#0288D1]"
+                                className="w-full py-2 text-xl font-bold rounded-lg shadow-md text-white bg-[#0288D1]"
                             >
-                                {loading ? 'Создание...' : 'Создать'}
+                                {loading ? 'Создание задач...' : 'Создать задания на выбранные темы'}
                             </button>
                             <div className="flex justify-between">
                                 <button
@@ -317,13 +332,13 @@ const BotInterface = ({ classData }) => {
                                     disabled={loading || selectedTopics.length === 0 || generatedTasks.length === 0}
                                     className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-[#00796B] mr-2"
                                 >
-                                    {loading ? 'Добавление...' : 'Добавить'}
+                                    {loading ? 'Добавление заданий...' : 'Добавить еще заданий'}
                                 </button>
                                 <button
                                     onClick={handleReset}
                                     className="w-1/2 py-2 font-semibold rounded-lg shadow-md text-white bg-[#6A1B9A] ml-2"
                                 >
-                                    Главное меню
+                                    Обновить
                                 </button>
                             </div>
                         </div>
@@ -346,7 +361,7 @@ const BotInterface = ({ classData }) => {
                     generatedTasks && generatedTasks.length > 0 && descriptors != null && (
                         <div className="flex-1 h-full p-8 overflow-auto bg-white">
                             <div className="p-8 rounded shadow-lg">
-                                <h2 className="text-2xl font-bold mb-4">Сгенерированные задачи:</h2>
+                                <h2 className="text-2xl font-bold mb-4">Вот ваши задачи:</h2>
                                 <div id="pdfContent">
                                     <GeneratedTasks
                                         generatedTasks={generatedTasks}
@@ -383,17 +398,39 @@ const BotInterface = ({ classData }) => {
                     )
                 }
             </div>
-            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#F1F4F9]">
+            <div className="w-1/4 h-full p-8 sticky top-0 overflow-auto bg-[#F1F4F9]" ref={containerRef}>
+                {!isInfoVisible && (
+                    <button
+                        onClick={() => setInfoVisible(true)}
+                        className="text-blue-500 text-xl hover:underline mb-2">
+                        Что за меню ниже?
+                    </button>
+                )}
+
+                {isInfoVisible && (
+                    <div className="bg-white rounded-xl border-2 border-gray-300 p-6 shadow-md relative">
+                        <span
+                            className="absolute top-0 right-0 bg-white rounded-full p-1 cursor-pointer text-sm leading-none text-gray-500 hover:text-gray-700 -mt-3 -mr-3"
+                            onClick={() => setInfoVisible(false)}>
+                            ✖
+                        </span>
+                        <p className="text-lg font-semibold mb-4">
+                            Данное меню отвечает за создание информирующей таблицы для СОРов и СОЧей.
+                            Заполните данные ниже для того чтобы начальная таблица СОРа или СОЧа была заполнена вашими данными.
+                            Меню будет дополняться по мере заполнения данных. Не волнуйтесь и просто следуйте инструкциям.
+                        </p>
+                    </div>
+                )}
                 <CustomTextField
-                    title="Тип проверки знаний"
-                    placeholder="Введите тип проверки знаний, к примеру Суммативное оценивание"
+                    title="Создаем СОР или СОЧ?"
+                    placeholder="Введите тип проверки знаний, к примеру Суммативное оценивание за раздел"
                     value={customTitle}
                     onChange={handleCustomTitleChange}
                 />
                 <MUI.Slide direction="down" in={customTitle.length > 0}>
                     <div>
                         <CustomTextField
-                            title="Тема"
+                            title="Тема данного СОРа или СОЧа"
                             placeholder="Введите тему"
                             value={topic}
                             onChange={(e) => setTopic(e.target.value)}
@@ -403,8 +440,8 @@ const BotInterface = ({ classData }) => {
                 <MUI.Slide direction="down" in={topic.length > 0}>
                     <div>
                         <CustomTextField
-                            title="Цель обучения"
-                            placeholder="Введите цель обучения"
+                            title="Впишите цели обучения"
+                            placeholder="Цели обучения"
                             value={learningObjective}
                             onChange={(e) => setLearningObjective(e.target.value)}
                         />

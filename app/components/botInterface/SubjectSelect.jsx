@@ -16,7 +16,8 @@ const SubjectSelect = ({ classData, selectedSubject, setSelectedSubject, changeS
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-4">Выбор предмета:</h1>
+            <p className="text-4xl font-bold mb-8 flex justify-center">Дорогой учитель!</p>
+            <h1 className="text-2xl font-bold mb-4">Выберите предмет обучения:</h1>
             <Select
                 onChange={(e) => {
                     if (e) {
@@ -28,7 +29,7 @@ const SubjectSelect = ({ classData, selectedSubject, setSelectedSubject, changeS
                     }
                 }}
                 className="w-full mt-4 text-black"
-                placeholder="Выберите предмет"
+                placeholder="Выберите ваш предмет!"
                 options={subjectOptions}
                 isClearable
                 isSearchable
