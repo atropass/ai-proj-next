@@ -7,6 +7,7 @@ const SubjectSelect = ({ classData, selectedSubject, setSelectedSubject, changeS
     const translationMapping = {
         "math": "Математика",
         "phys": "Физика",
+        "chem": "Химия",
     };
     const subjectOptions = Object.keys(classData).map((subject) => ({
         value: subject,
